@@ -8,8 +8,8 @@
 //										  Descrição: Trabalho Final
 //
 // 										  Identificação:
-// 										  Nome da(o) aluna(o) & Matricula: Ari Vitor da Silva Lazzarotto, 17200917
-// 										  Nome da(o) aluna(o) & Matricula: Adriel Correa Matielo, 16105321
+// 										  Nome da(o) aluna(o) & Matr�cula: Ari Vitor da Silva Lazzarotto, 17200917
+// 										  Nome da(o) aluna(o) & Matr�cula: Adriel Correa Matielo, 16105321
 //										  Data: 12/09/2023			
 //
 //======================================= 
@@ -25,11 +25,6 @@
 #define COL1 P1_5
 #define COL2 P1_6
 
-#define MOTOR0 P0_0
-#define MOTOR1 P0_1
-#define MOTOR2 P0_2
-#define MOTOR3 P0_3
-
 // LCD pins
 #define LCD			P2
 #define EN			P3_7
@@ -37,8 +32,6 @@
 
 // delay function
 void DELAY(unsigned int ms);
-void Delay5ms(void);
-void Delay5us(void)
 
 //keyboard function
 void CHECK_LINES(int *input) { };	// check the keyboard lines and return the input
@@ -48,38 +41,15 @@ void ConfigLCD(void);
 void Line1(void);
 void Line2(void);
 void WriteMSG(char msg[]);
+void Delay5us(void);
+void Delay5ms(void);
 void WrCMD(void);
 void WrCHAR(void);
-
-// Util Functions
-					//int convertBCD(int decimal);
 
 // Vending machine functions
 void returnInsertedMoney(float *inserted_amount) { };
 void dispenseProduct(int *selected_product) { };
-void moveServo(int *selected_product) {
-	int binary[3];
-	int i = 0;
-
-	// Caso especial: se o valor decimal for zero, o binário também é zero
-	if (decimal == 0) {
-		MOTOR0 = 0;
-		MOTOR1 = 0;
-		MOTOR2 = 0;
-		MOTOR3 = 0;
-	}
-
-	// Converte decimal para binário
-	while (decimal > 0) {
-			binary[i] = decimal % 2;
-			decimal = decimal / 2;
-			i++;
-	}
-		MOTOR0 = binary[0];
-		MOTOR1 = binary[1];
-		MOTOR2 = binary[2];
-		MOTOR3 = binary[3];
-};
+void moveServo(int *selected_product) { };
 void dispenseChange(float change) { };
 void dispenseProductAndChange(int *selected_product, float change) { };
 void waitTheRestOfcash(float *total_price, float *inserted_amount) { };
@@ -124,7 +94,7 @@ int main() {
 }
 
 void vendingMachine(int *input, int *selected_product, float *total_price, float *inserted_amount) {
-    int digito1 = 0, digito2 = 0;
+    int digit1 = 0, digit2 = 0;
 
     ConfigLCD();
     Line1();
@@ -145,7 +115,7 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
         returnInsertedMoney(inserted_amount);
         break;
     }else
-        digito1 = *input;
+        digit1 = *input;
 
     ConfigLCD();
     Line1();
@@ -166,10 +136,10 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
         returnInsertedMoney(inserted_amount);
         break;
     }else
-        digito2 = *input;
+        digit2 = *input;
 
-    *input = digito1 * 10 + digito2;                                        // the value of the input is the concat of the 2 digits       
-    *selected_product = product_matrix[digito1][digito2];                   // here we have the selected product
+    *input = digit1 * 10 + digit2;                                        // the value of the input is the concat of the 2 digits       
+    *selected_product = product_matrix[digit1][digit2];                   // here we have the selected product
 
     if (*input == 10) {                                                     // case '*' to cancel the transaction and return any inserted money.
         ConfigLCD();
@@ -209,10 +179,6 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
             }
         }
     } else if (*input >= 1 && *input <= 30) {                               // case the input is a valid product number, check if the product is available.
-        int tens_digit = input[0] - '0';
-        int ones_digit = input[1] - '0';
-        *selected_product = product_matrix[tens_digit][ones_digit];
-
         if (*selected_product >= 1 && *selected_product <= 30) {
             // Calculate the total price of the selected product
             *total_price = product_prices[*selected_product];
@@ -312,7 +278,19 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
 return 0;
 }
 
-
+void DELAY(unsigned int ms) {       // delay vai ser diferente do esperado, mas deveria funcionar
+	TMOD |= 0x01;					// A operaço OU preserva alguma eventual configuraço previa do T/C 1.
+	
+	while(ms){
+		TH0 = 0xFC;					// Valor de recarga para 1 ms @ f = 12 MHz (i.e. 64535).
+		TL0 = 0x17;
+		TR0 = 1;
+		while(!TF0);
+		TF0 = 0;
+		TR0 = 0;
+		ms--;
+	}
+}
 
 void CHECK_LINES(int *input) {      // loop to check the keyboard and get the input, until the user press '*' or '#' key. Need a logic to take 2 digits input.
     while(1) {
@@ -404,31 +382,8 @@ void CHECK_LINES(int *input) {      // loop to check the keyboard and get the in
     }
 }
 
-void Delay5us(void){
-	unsigned char i;
-	for(i = 0; i < 5; i++){}
-}
-
-void Delay5ms(void){
-	DELAY(5);
-}
-
-void DELAY(unsigned int ms) {       // delay vai ser diferente do esperado, mas deveria funcionar
-	TMOD |= 0x01;					// A operaço OU preserva alguma eventual configuraço previa do T/C 1.
-	
-	while(ms){
-		TH0 = 0xFC;					// Valor de recarga para 1 ms @ f = 12 MHz (i.e. 64535).
-		TL0 = 0x17;
-		TR0 = 1;
-		while(!TF0);
-		TF0 = 0;
-		TR0 = 0;
-		ms--;
-	}
-}
-
-
-void ConfigLCD(void) {
+void ConfigLCD(void)
+{
 	LCD = 0x38;
 	WrCMD();
 	LCD = 0x06;
@@ -439,9 +394,20 @@ void ConfigLCD(void) {
 	WrCMD();
 }
 
+void Line1(void)
+{	
+	LCD = 0x00;
+	WrCMD();
+}
 
+void Line2(void)
+{
+	LCD = 0xC0;
+	WrCMD();
+}
 
-void WriteMSG(char msg[]){
+void WriteMSG(char msg[])
+{
 	unsigned char i;
 	for(i = 0; i < 16; i++)
 	{
@@ -450,17 +416,19 @@ void WriteMSG(char msg[]){
 	}
 }
 
-void Line1(void){	
-	LCD = 0x00;
-	WrCMD();
+void Delay5us(void)
+{
+	unsigned char i;
+	for(i = 0; i < 5; i++){}
 }
 
-void Line2(void){
-	LCD = 0xC0;
-	WrCMD();
+void Delay5ms(void)
+{
+	DELAY(5);
 }
 
-void WrCMD(void){
+void WrCMD(void)
+{
 	RS = 0;
 	EN = 1;
 	Delay5us();
@@ -468,27 +436,11 @@ void WrCMD(void){
 	Delay5ms();
 }
 
-void WrCHAR(void){
+void WrCHAR(void)
+{
 	RS = 1;
 	EN = 1;
 	Delay5us();
 	EN = 0;
 	Delay5ms();
 }
-//void convertBCD(int decimal){
-//	int binary[3];
-//    int i = 0;
-
-//    // Caso especial: se o valor decimal for zero, o binário também é zero
-//    if (decimal == 0) {
-//        return;
-//    }
-
-//    // Converte decimal para binário
-//    while (decimal > 0) {
-//        binary[i] = decimal % 2;
-//        decimal = decimal / 2;
-//        i++;
-//    }
-//	*motor = *binary;
-//}
