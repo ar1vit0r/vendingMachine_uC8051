@@ -32,6 +32,8 @@
 
 // delay function
 void DELAY(unsigned int ms);
+void Delay5ms(void);
+void Delay5us(void);
 
 //keyboard function
 void CHECK_LINES(int *input) { };	// check the keyboard lines and return the input
