@@ -25,14 +25,26 @@
 #define COL1 P1_5
 #define COL2 P1_6
 
+// LCD pins
+#define LCD			P2
+#define EN			P3_7
+#define RS			P3_6
+
 // delay function
 void DELAY(unsigned int ms);
 
-//keyboard functions
-void CHECK_LINE0(int *input) { };	
-void CHECK_LINE1(int *input) { };
-void CHECK_LINE2(int *input) { };
-void CHECK_LINE3(int *input) { };
+//keyboard function
+void CHECK_LINES(int *input) { };	// check the keyboard lines and return the input
+
+// LCD functions
+void ConfigLCD(void);
+void Line1(void);
+void Line2(void);
+void WriteMSG(char msg[]);
+void Delay5us(void);
+void Delay5ms(void);
+void WrCMD(void);
+void WrCHAR(void);
 
 // Vending machine functions
 void returnInsertedMoney(float *inserted_amount) { };
@@ -83,15 +95,15 @@ int main() {
 
 void vendingMachine(int *input, int *selected_product, float *total_price, float *inserted_amount) {
     while (1) {             // loop to check the keyboard and get the input, until the user press '*' or '#' key. Need a logic to take 2 digits input.
-        CHECK_LINE0(input);
-        DELAY(100);
-        CHECK_LINE1(input);
-        DELAY(100);
-        CHECK_LINE2(input);
-        DELAY(100);
-        CHECK_LINE3(input);
+        CHECK_LINES(input);
 
         if (*input == 10) {                                                     // case '*' to cancel the transaction and return any inserted money.
+            ConfigLCD();
+            Line1();
+            WriteMSG("* Teste do LCD *");
+            Line2();
+            WriteMSG(" Micros  2023-1 ");
+            while(1);
             printf("Transaction canceled. Returning inserted money.\n");
             returnInsertedMoney(inserted_amount);
             break;
@@ -170,7 +182,7 @@ void DELAY(unsigned int ms) {       // delay vai ser diferente do esperado, mas 
 	}
 }
 
-void CHECK_LINE0(int *input) {
+void CHECK_LINES(int *input) {
     LIN0 = 0;
     LIN1 = 1;
     LIN2 = 1;
@@ -185,9 +197,9 @@ void CHECK_LINE0(int *input) {
     if (!COL2) {
         *input = 3;
     }
-}
 
-void CHECK_LINE1(int *input) {
+    DELAY(100);
+
     LIN0 = 1;
     LIN1 = 0;
     LIN2 = 1;
@@ -202,9 +214,9 @@ void CHECK_LINE1(int *input) {
     if (!COL2) {
         *input = 6;
     }
-}
 
-void CHECK_LINE2(int *input) {
+    DELAY(100);
+
     LIN0 = 1;
     LIN1 = 1;
     LIN2 = 0;
@@ -219,9 +231,9 @@ void CHECK_LINE2(int *input) {
     if (!COL2) {
         *input = 9;
     }
-}
 
-void CHECK_LINE3(int *input) {
+    DELAY(100);
+
     LIN0 = 1;
     LIN1 = 1;
     LIN2 = 1;
@@ -236,4 +248,69 @@ void CHECK_LINE3(int *input) {
     if (!COL2) {
         *input = 12;        // '#' key
     }
+
+    DELAY(100);
+}
+
+void ConfigLCD(void)
+{
+	LCD = 0x38;
+	WrCMD();
+	LCD = 0x06;
+	WrCMD();
+	LCD = 0x0E;
+	WrCMD();
+	LCD = 0x01;
+	WrCMD();
+}
+
+void Line1(void)
+{	
+	LCD = 0x00;
+	WrCMD();
+}
+
+void Line2(void)
+{
+	LCD = 0xC0;
+	WrCMD();
+}
+
+void WriteMSG(char msg[])
+{
+	unsigned char i;
+	for(i = 0; i < 16; i++)
+	{
+		LCD = msg[i];
+		WrCHAR();
+	}
+}
+
+void Delay5us(void)
+{
+	unsigned char i;
+	for(i = 0; i < 5; i++){}
+}
+
+void Delay5ms(void)
+{
+	DELAY(5);
+}
+
+void WrCMD(void)
+{
+	RS = 0;
+	EN = 1;
+	Delay5us();
+	EN = 0;
+	Delay5ms();
+}
+
+void WrCHAR(void)
+{
+	RS = 1;
+	EN = 1;
+	Delay5us();
+	EN = 0;
+	Delay5ms();
 }
