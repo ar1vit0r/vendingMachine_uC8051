@@ -27,8 +27,8 @@
 
 // LCD pins
 #define LCD			P2
-#define EN			P3_7
-#define RS			P3_6
+#define EN			P3_6
+#define RS			P3_7
 
 // delay function
 void DELAY(unsigned int ms);
