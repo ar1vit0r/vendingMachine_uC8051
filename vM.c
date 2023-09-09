@@ -95,7 +95,18 @@ int main() {
 
 void vendingMachine(int *input, int *selected_product, float *total_price, float *inserted_amount) {
     while (1) {             // loop to check the keyboard and get the input, until the user press '*' or '#' key. Need a logic to take 2 digits input.
-        CHECK_LINES(input);
+      //MSG "insira o COD ou Dinheiro  
+			CHECK_LINES(input);
+			//temos o 1º digito
+			//MSG "INSIRA O SEG DIGITO"
+			CHECK_LINES(input);
+			//MSG: "VALOR DO PRODUTO"
+			//FUNC ESPERA DO DINHEIRO
+			//O DINHEIRO É SUFICIENTE
+				//Y FUNC RODA O MOTOR CODIGO
+				//Y DEVOLVE O TROCO
+			//O DINHEIRO N É SUFICIENTE
+			
 
         if (*input == 10) {                                                     // case '*' to cancel the transaction and return any inserted money.
             ConfigLCD();
