@@ -249,7 +249,7 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
         } else {
             ConfigLCD();
             Line1();
-            WriteMSG("* Invalid product numbers. *");
+            WriteMSG("* Product out of stock *");
             Line2();
             WriteMSG(" Returning inserted money ");
             //while(1);      
