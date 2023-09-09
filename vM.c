@@ -38,7 +38,7 @@
 // delay function
 void DELAY(unsigned int ms);
 void Delay5ms(void);
-void Delay5us(void)
+void Delay5us(void);
 
 //keyboard function
 void CHECK_LINES(int *input) { };	// check the keyboard lines and return the input
@@ -62,7 +62,7 @@ void moveServo(int *selected_product) {
 	int i = 0;
 
 	// Caso especial: se o valor decimal for zero, o binário também é zero
-	if (decimal == 0) {
+	if (*selected_product == 0) {
 		MOTOR0 = 0;
 		MOTOR1 = 0;
 		MOTOR2 = 0;
@@ -70,9 +70,9 @@ void moveServo(int *selected_product) {
 	}
 
 	// Converte decimal para binário
-	while (decimal > 0) {
-			binary[i] = decimal % 2;
-			decimal = decimal / 2;
+	while (*selected_product > 0) {
+			binary[i] = *selected_product % 2;
+			decimal = *selected_product / 2;
 			i++;
 	}
 		MOTOR0 = binary[0];
@@ -475,20 +475,3 @@ void WrCHAR(void){
 	EN = 0;
 	Delay5ms();
 }
-//void convertBCD(int decimal){
-//	int binary[3];
-//    int i = 0;
-
-//    // Caso especial: se o valor decimal for zero, o binário também é zero
-//    if (decimal == 0) {
-//        return;
-//    }
-
-//    // Converte decimal para binário
-//    while (decimal > 0) {
-//        binary[i] = decimal % 2;
-//        decimal = decimal / 2;
-//        i++;
-//    }
-//	*motor = *binary;
-//}
