@@ -29,7 +29,7 @@ void main() {
 				IT0 = 0;
 			}
 		}
-		WAITING = 30
+		WAITING = 30;
 		
 		secondcode();
 		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E 2ºCOD E PRESSIONAR ENTER (#)

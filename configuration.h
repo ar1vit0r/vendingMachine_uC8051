@@ -7,6 +7,12 @@
 #include "routines.h"
 #include "vendingMachine.h"
 
+#include "lcd.c"
+#include "delay.c"
+#include "keyboard.c"
+#include "routines.c"
+#include "vendingMachine.c"
+
 //keyboard 4x3
 #define LIN0 P1_0
 #define LIN1 P1_1
@@ -27,10 +33,11 @@
 #define EN			P3_7
 #define RS			P3_6
 
-#define MOTOR_MATRIX_SIZE 3
+#define MOTOR_MATRIX_LINE 3
+#define MOTOR_MATRIX_COLLUM 3
 #define MAX_PRODUCT 10
 
-int PRODUCT[MOTOR_MATRIX_SIZE][MOTOR_MATRIX_SIZE];
+int PRODUCT[MOTOR_MATRIX_LINE][MOTOR_MATRIX_COLLUM];
 
 int DIGIT1 = 0;
 int DIGIT2 = 0;
