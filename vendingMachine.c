@@ -1,10 +1,16 @@
 #include "configuration.h"
 
 void vendingMachine(int input, int selected_product, float total_price, float inserted_amount) {
+
+    ConfigLCD();
+    Line1();
+    WriteMSG("* Welcome to vending machine! *");
+    Line2();
+    WriteMSG(" Insert the money or select a product ");
     
     CHECK_LINES(input);
 
-    if( input == 10 || input == 12) {                                                     // case '*' to cancel the transaction and return any inserted money.
+    if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
         ConfigLCD();
         Line1();
         WriteMSG("* Transaction canceled *");

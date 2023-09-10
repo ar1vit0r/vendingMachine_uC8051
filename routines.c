@@ -3,11 +3,15 @@
 
 void start(){
 	P0 = 1;
-//Charge machine with productis
+//Charge machine with products
 	for (int i=0; i < MOTOR_MATRIX_SIZE; i++){
 		for (int j=0; j < MOTOR_MATRIX_SIZE; j++){
 			store(i, j, MAX_PRODUCT);
 		}
+	}
+//Charge vetor with product prices
+	for (int i=0; i < MOTOR_MATRIX_SIZE*MOTOR_MATRIX_SIZE; i++){
+		product_prices[i] = 1.0 * (i+1);
 	}
 //Set first message on display
 	ConfigLCD();
