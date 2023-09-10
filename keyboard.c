@@ -16,11 +16,11 @@ int CHECK_LINES() {      // loop to check the keyboard and get the input, until 
         }
         if (!COL1) {
             DELAY(100);
-            return 1;
+            return 2;
         }
         if (!COL2) {
             DELAY(100);
-            break;
+            return 3;
         }
 
         LIN0 = 1;
@@ -29,40 +29,33 @@ int CHECK_LINES() {      // loop to check the keyboard and get the input, until 
         LIN3 = 1;
         
         if (!COL0) {
-            *input = 4;
             DELAY(100);
-            break;
+            return 4;
         }
         if (!COL1) {
-            *input = 5;
             DELAY(100);
-            break;
+            return 5;
         }
         if (!COL2) {
-            *input = 6;
             DELAY(100);
-            break;
+            return 6;
         }
 
         LIN0 = 1;
         LIN1 = 1;
         LIN2 = 0;
         LIN3 = 1;
-        
         if (!COL0) {
-            *input = 7;
             DELAY(100);
-            break;
+            return 7;
         }
         if (!COL1) {
-            *input = 8;
             DELAY(100);
-            break;
+            return 8;
         }
         if (!COL2) {
-            *input = 9;
             DELAY(100);
-            break;
+            return 9;
         }
 
         LIN0 = 1;
@@ -71,19 +64,19 @@ int CHECK_LINES() {      // loop to check the keyboard and get the input, until 
         LIN3 = 0;
         
         if (!COL0) {
-            *input = 10;        // '*' key
+						//'*' key
             DELAY(100);
-            break;
+            return 10;
         }
         if (!COL1) {
-            *input = 11;        // '0' key 
+            // '0' key 
             DELAY(100);
-            break;
+            return 11;
         }
         if (!COL2) {
-            *input = 12;        // '#' key
+						// '#' key
             DELAY(100);
-            break;
+            return 12;;
         }
     }
 }
