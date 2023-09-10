@@ -1,9 +1,9 @@
-void vendingMachine(int *input, int *selected_product, float *total_price, float *inserted_amount) {
+void vendingMachine(int input, int selected_product, float total_price, float inserted_amount) {
     int digit1 = 0, digit2 = 0;
 
     
     CHECK_LINES(input);
-    if( *input == 10 || *input == 12) {                                                     // case '*' to cancel the transaction and return any inserted money.
+    if( input == 10 || input == 12) {                                                     // case '*' to cancel the transaction and return any inserted money.
         ConfigLCD();
         Line1();
         WriteMSG("* Transaction canceled *");
@@ -14,10 +14,10 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
         returnInsertedMoney(inserted_amount);
         break;
     }else{
-        if( *input == 11) {                                                 // case '0' to cancel the transaction and return any inserted money.
+        if( input == 11) {                                                 // case '0' to cancel the transaction and return any inserted money.
             digit1 = 0;
         }else
-            digit1 = *input;
+            digit1 = input;
     }
 
     ConfigLCD();
@@ -28,7 +28,7 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
     //while(1);    
     
     CHECK_LINES(input);
-    if( *input == 10 || *input == 12) {                                                     // case '*' to cancel the transaction and return any inserted money.
+    if( input == 10 || input == 12) {                                                     // case '*' to cancel the transaction and return any inserted money.
         ConfigLCD();
         Line1();
         WriteMSG("* Transaction canceled *");
@@ -39,22 +39,22 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
         returnInsertedMoney(inserted_amount);
         break;
     }else{
-        if( *input == 11) {                                                 // case '0' to cancel the transaction and return any inserted money.
+        if( input == 11) {                                                 // case '0' to cancel the transaction and return any inserted money.
             digit2 = 0;
         }else
             digit2 = *input;
     }
 
-    *input = digit1 * 10 + digit2;                                        // the value of the input is the concat of the 2 digits       
-    *selected_product = product_matrix[digit1][digit2];                   // here we have the stock of selected product
+    input = digit1 * 10 + digit2;                                        // the value of the input is the concat of the 2 digits       
+    selected_product = product_matrix[digit1][digit2];                   // here we have the stock of selected product
 
-    if (*input >= 1 && *input <= 30) {                                    // check if the input is a valid product number
-        if (*selected_product >= 1 ) {                                    // check if the selected product is in stock
+    if (input >= 1 && input <= 30) {                                    // check if the input is a valid product number
+        if (selected_product >= 1 ) {                                    // check if the selected product is in stock
             // Calculate the total price of the selected product
-            *total_price = product_prices[*selected_product];
+            total_price = product_prices[selected_product];
 
             // Accept and validate coins until the total amount is reached
-            while (*inserted_amount < *total_price) {
+            while (inserted_amount < total_price) {
                 float inserted_coin;
                 ConfigLCD();
                 Line1();
@@ -64,10 +64,10 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
                 //while(1);    
                 printf("Insert a coin: ");
                 scanf("%f", &inserted_coin);
-                *inserted_amount += inserted_coin;
+                inserted_amount += inserted_coin;
             }
             
-            if (*inserted_amount == *total_price) {
+            if (inserted_amount == total_price) {
                 // No change to be dispensed
                 // Move servo motor associated with selected_product
                 ConfigLCD();
@@ -77,10 +77,10 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
                 WriteMSG(" Thank you for using the vending machine ");
                 //while(1);        
                 printf("Dispensing product %d...\n", selected_product);
-                printf("Product delivered at servo position %d degrees.\n", servo_positions[*selected_product]);
+                printf("Product delivered at servo position %d degrees.\n", servo_positions[selected_product]);
                 printf("Thank you for using the vending machine!\n");
                 break;
-            } else if (*inserted_amount > *total_price) {
+            } else if (inserted_amount > total_price) {
                 // Provide correct change and dispense the product
                 // Move servo motor associated with selected_product
                 ConfigLCD();
@@ -91,13 +91,13 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
                 //while(1);        
                 printf("Dispensing product %d...\n", selected_product);
                 printf("Product delivered at servo position %d degrees.\n", servo_positions[*selected_product]);
-                float change = *inserted_amount - *total_price;
+                float change = inserted_amount - total_price;
                 printf("Change: $%.2f\n", change);
                 printf("Thank you for using the vending machine!\n");
                 break;
             } else {
                 // The amount isn't correct, continue accepting money
-                while(*inserted_amount < *total_price) {
+                while(inserted_amount < total_price) {
                     float inserted_coin;
                     ConfigLCD();
                     Line1();
@@ -107,7 +107,7 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
                     //while(1);        
                     printf("Insert a coin: ");
                     scanf("%f", &inserted_coin);
-                    *inserted_amount += inserted_coin;
+                    inserted_amount += inserted_coin;
                     printf("Insufficient funds. Please insert more coins.\n");
                     waitTheRestOfcash(total_price, inserted_amount);
                 }
@@ -138,10 +138,10 @@ void vendingMachine(int *input, int *selected_product, float *total_price, float
     WriteMSG(" waiting for the money ");
     //while(1);    
     //FUNC ESPERA DO DINHEIRO
-    //O DINHEIRO É SUFICIENTE
+    //O DINHEIRO ï¿½ SUFICIENTE
         //Y FUNC RODA O MOTOR CODIGO
         //Y DEVOLVE O TROCO
-    //O DINHEIRO N É SUFICIENTE
+    //O DINHEIRO N ï¿½ SUFICIENTE
         //Y FUNC ESPERA O RESTO DO DINHEIRO
         //Y FUNC RODA O MOTOR CODIGO
         //Y DEVOLVE O TROCO

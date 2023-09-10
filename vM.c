@@ -17,8 +17,6 @@
 #include <at89x52.h>
 #include "configuration.h"
 
-
-
 // Define product prices
 float product_prices[9];
 
@@ -84,21 +82,8 @@ void main() {
 		
 	}
     // Initialize servo_positions and product_prices arrays
-//    int *selected_product = (int *)malloc(sizeof(int));
-//    *selected_product = 0;
-//    float *total_price = (float *)malloc(sizeof(float));
-//    *total_price = 0.0;
-//    float *inserted_amount = (float *)malloc(sizeof(float));
-//    *inserted_amount = 0.0;
-//    int *input = malloc(sizeof(int));
-//    *input = 0;
 
-//    vendingMachine(input, selected_product, total_price, inserted_amount);
+    vendingMachine(input, selected_product, total_price, inserted_amount);
 
-//    free(selected_product);
-//    free(total_price);
-//    free(inserted_amount);
-//    free(input);
-
-    //return 0;
+    return 0;
 }

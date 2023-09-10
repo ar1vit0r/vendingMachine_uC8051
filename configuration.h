@@ -27,8 +27,13 @@
 
 #define MOTOR_MATRIX_SIZE 3
 #define MAX_PRODUCT 10
+
 int PRODUCT[MOTOR_MATRIX_SIZE][MOTOR_MATRIX_SIZE];
 
-int DIGIT1;
-int DIGIT2;
+int DIGIT1 = 0;
+int DIGIT2 = 0;
 
+int selected_product = 0;
+float total_price = 0.0;
+float inserted_amount = 0.0;
+int input = 0;

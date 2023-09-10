@@ -30,8 +30,6 @@ void returnInsertedMoney_time(float *inserted_amount) {
     WriteMSG("%f.1 Returned amount ", *inserted_amount);
 }
 
-}
-
 void dispenseProduct(int *selected_product) {
 	int temp_product = *selected_product;
 	ConfigLCD();
@@ -43,7 +41,7 @@ void dispenseProduct(int *selected_product) {
 	int binary[3];
 	int i = 0;
 
-	// Converte decimal para binário
+	// Converte decimal para binï¿½rio
 	while (*selected_product > 0) {
 			binary[i] = *selected_product % 2;
 			*selected_product = *selected_product / 2;
@@ -61,30 +59,32 @@ void dispenseProduct(int *selected_product) {
     Line2();
     WriteMSG(" %d ", *temp_product);
 	void DELAY(3000);
-	
 }
 
 void dispenseChange(float change) { 
-	
 	ConfigLCD();
     Line1();
     WriteMSG("Your change is");
     Line2();
     WriteMSG("%f.1 ", change);
 	void DELAY(5000);
-
 }
+
 void dispenseProductAndChange(int *selected_product, float change) {
 	dispenseProduct(*selected_product);
 	dispenseChange(change);
-
 }
+
 void waitTheRestOfcash(float *product_price, float *inserted_amount) {
-	
-
+	ConfigLCD();
+	Line1();
+	WriteMSG("Insert the rest of");
+	Line2();
+	WriteMSG(" %f.1 ", *product_price-*inserted_amount);
+	void DELAY(3000);
 }
+
 int checkIfNeedChange(float *inserted_amount, float *product_price) { 
 	if (*inserted_amount > *product_price)
 		dispenseChange(*inserted_amount-*product_price);
-
 }
