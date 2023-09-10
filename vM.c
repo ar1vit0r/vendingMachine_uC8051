@@ -16,6 +16,7 @@
 //#include <stdio.h>
 #include <at89x52.h>
 #include "configuration.h"
+#include "routines.c"
 
 // Define product prices
 float product_prices[9];
@@ -26,10 +27,15 @@ void main() {
 	while(1){
 /////KEYBOARD
 		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÇÃO
-		if (CHECK_LINES()){
-			
+		if (CHECK_LINES() != 10){
+			if (CHECK_LINES() != 12){
+				IT0 = 0;
+			}
 		}
-		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E DESABILITA A INTERRUPÇÃO DE ENTRADA DE DINHEIRO ATÉ COLOCAR 2ºCOD E PRESSIONAR ENTER (#)
+		WAITING = 30
+		
+		secondcode();
+		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E 2ºCOD E PRESSIONAR ENTER (#)
 		
 		//PRESSIONADO #, HABILITA A INTERRUPÇÃO
 		//AVISA O PREÇO DO PRODUTO
@@ -85,5 +91,4 @@ void main() {
 
     vendingMachine(input, selected_product, total_price, inserted_amount);
 
-    return 0;
 }
