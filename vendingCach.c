@@ -2,26 +2,49 @@
 
 void vendingMachine() {
 
-    start();
-    EX0 = 0;
-        input = CHECK_LINES();
-				if (input == 77)
-					return;
-		EX0 = 0;
-				// case '*' or '#' to cancel the transaction and return any inserted money.
-        if( input == 10 || input == 12) {                                     
-            ConfigLCD();
-            Line1();
-            WriteMSG("* Transaction canceled *");
-            Line2();
-            returnInsertedMoney(inserted_amount);
-            return;
-        }else{
-            if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
-                DIGIT1 = 0;
-            }else
-                DIGIT1 = input;
-        }
+	start();
+
+	EX1=0;
+	
+	while (FLAG){
+		cancelRequest();
+		return;
+
+		ConfigLCD();
+		Line1();
+		WriteMSG("* Press '*' for continue *");
+		Line2();
+		WriteMSG(" Inserted amount %d ", &inserted_amount);
+		
+	}
+	EX1=1;
+	
+	
+	
+	
+	
+	
+	
+	
+	IE = 1;
+	input = CHECK_LINES();
+	if (input == 77)
+		return;
+	IE = 0;
+	// case '*' or '#' to cancel the transaction and return any inserted money.
+	if( input == 10 || input == 12) {                                     
+			ConfigLCD();
+			Line1();
+			WriteMSG("* Transaction canceled *");
+			Line2();
+			returnInsertedMoney(inserted_amount);
+			return;
+	}else{
+			if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
+					DIGIT1 = 0;
+			}else
+					DIGIT1 = input;
+	}
 
     ConfigLCD();
     Line1();
@@ -51,7 +74,7 @@ void vendingMachine() {
             total_price = product_prices[input];
 
             // Accept and validate coins until the total amount is reached
-						EX0 = 0;
+						IE = 1;
             while (inserted_amount < total_price){
 							if (FLAG){
 								cancelRequest();
@@ -63,7 +86,7 @@ void vendingMachine() {
 							Line2();
 							WriteMSG(" %d ", &inserted_amount);
             }
-						EX0 = 1;
+						IE = 0;
             
             if (inserted_amount == total_price) {
                 // No change to be dispensed

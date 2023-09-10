@@ -3,7 +3,8 @@
 
 void start(){
 	P0 = 1;
-	IE = 1;
+	EA = 1;
+	//IE [EA - - ES ET1 EX1 ET0 EX0]
 	
 //Charge machine with products
 	for (int i=0; i < MOTOR_MATRIX_SIZE; i++){
@@ -113,4 +114,12 @@ float sumMoney(){
 		}
 	}
 	return money;
+}
+
+void cancelRequest(){
+	ConfigLCD();
+        Line1();
+        WriteMSG("* Transaction canceled *");
+        Line2();
+        WriteMSG(" Returning inserted money ");
 }

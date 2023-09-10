@@ -21,18 +21,14 @@ void main() {
 	start();
 	
 	while(1){
+		
+		vendingMachine();
+		if (ISMONEYINSERT)
+			vendingCach();
+		
 /////KEYBOARD
 		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÇÃO
-		if (CHECK_LINES() != 10){
-			if (CHECK_LINES() != 12){
-				IT0 = 0;
-			}
-		}
-		waiting();
-		
-		secondcode();
 		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E 2ºCOD E PRESSIONAR ENTER (#)
-		
 		//PRESSIONADO #, HABILITA A INTERRUPÇÃO
 		//AVISA O PREÇO DO PRODUTO
 		//ESPERA POR 30S
@@ -85,6 +81,6 @@ void main() {
 	}
     // Initialize servo_positions and product_prices arrays
 
-    vendingMachine();
+    
 
 }

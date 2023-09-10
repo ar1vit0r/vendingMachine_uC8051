@@ -7,6 +7,7 @@
 #include "routines.h"
 #include "vendingMachine.h"
 #include "int0.h"
+#include "int1.h"
 
 #include "lcd.c"
 #include "delay.c"
@@ -14,6 +15,7 @@
 #include "routines.c"
 #include "vendingMachine.c"
 #include "int0.c"
+#include "int1.c"
 
 //keyboard 4x3
 #define LIN0 P1_0
@@ -45,21 +47,23 @@ extern float money;
 
 #define MOTOR_MATRIX_LINE 3
 #define MOTOR_MATRIX_COLLUM 3
-#define MAX_PRODUCT 10
+#define MAX_PRODUCT 9
 
-int PRODUCT[MOTOR_MATRIX_LINE][MOTOR_MATRIX_COLLUM];
+extern int PRODUCT[MOTOR_MATRIX_LINE][MOTOR_MATRIX_COLLUM];
 
-int DIGIT1 = 0;
-int DIGIT2 = 0;
+extern int DIGIT1 = 0;
+extern int DIGIT2 = 0;
 
 // Define product prices
-float product_prices[9];
+extern float product_prices[MAX_PRODUCT];
 
 int selected_product = 0;
 float total_price = 0.0;
 float inserted_amount = 0.0;
 int input = 0;
 
-int isMoneyinsert = 1;
+int ISMONEYINSERT = 0;
+
+extern int FLAG = 0;
 
 #endif
