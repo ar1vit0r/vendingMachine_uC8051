@@ -6,14 +6,14 @@
 #include "keyboard.h"
 #include "routines.h"
 #include "vendingMachine.h"
-#include "INT0.h"
+#include "int0.h"
 
 #include "lcd.c"
 #include "delay.c"
 #include "keyboard.c"
 #include "routines.c"
 #include "vendingMachine.c"
-#include "INT0.c"
+#include "int0.c"
 
 //keyboard 4x3
 #define LIN0 P1_0

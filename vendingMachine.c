@@ -1,6 +1,6 @@
 #include "configuration.h"
 
-void vendingMachine(int input, int selected_product, float total_price, float inserted_amount) {
+void vendingMachine() {
 
     start();
     
@@ -9,17 +9,17 @@ void vendingMachine(int input, int selected_product, float total_price, float in
 		IE = 0;
 
         if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
-                ConfigLCD();
-                Line1();
-                WriteMSG("* Transaction canceled *");
-                Line2();
-                returnInsertedMoney(inserted_amount);
-                return;
+            ConfigLCD();
+            Line1();
+            WriteMSG("* Transaction canceled *");
+            Line2();
+            returnInsertedMoney(inserted_amount);
+            return;
         }else{
             if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
-                    DIGIT1 = 0;
+                DIGIT1 = 0;
             }else
-                    DIGIT1 = input;
+                DIGIT1 = input;
         }
     }
 

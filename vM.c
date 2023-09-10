@@ -85,6 +85,6 @@ void main() {
 	}
     // Initialize servo_positions and product_prices arrays
 
-    vendingMachine(input, selected_product, total_price, inserted_amount);
+    vendingMachine();
 
 }
