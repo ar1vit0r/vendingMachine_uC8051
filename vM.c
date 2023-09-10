@@ -16,7 +16,6 @@
 //#include <stdio.h>
 #include <at89x52.h>
 #include "configuration.h"
-#include "routines.c"
 
 void main() {
 	start();

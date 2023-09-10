@@ -26,15 +26,29 @@ void DELAY(unsigned int ms) {       // delay vai ser diferente do esperado, mas 
 
 void DELAY1_MS(unsigned int ms) {
 	//mode 01 for timer1
-	TMOD = 0x10;
+	TMOD |= 0x10;
 	
 	while(ms){
-		TH0 = 0xFC;
-		TL0 = 0x17;
-		TR0 = 1;
-		while(!TF0);
-		TF0 = 0;
-		TR0 = 0;
+		TH1 = 0xFE;
+		TL1 = 0x18;
+		TR1 = 1;
+		while(!TF1);
+		TF1 = 0;
+		TR1 = 0;
+		ms--;
+	}
+}
+void waiting() {
+	//mode 01 for timer1
+	TMOD |= 0x10;
+	int waitingTime = 30;
+	while(waitingTime){
+		TH1 = 0xFE;
+		TL1 = 0x18;
+		TR1 = 1;
+		while(!TF1);
+		TF1 = 0;
+		TR1 = 0;
 		ms--;
 	}
 }
