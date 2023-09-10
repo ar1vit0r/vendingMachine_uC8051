@@ -17,9 +17,6 @@
 #include <at89x52.h>
 #include "configuration.h"
 
-// Define product prices
-float product_prices[9];
-
 void main() {
 	start();
 	

@@ -52,7 +52,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
     if (input >= 1 && input <= 30) {                                     // check if the input is a valid product number
         if (selected_product >= 1 ) {                                    // check if the selected product is in stock
             // Calculate the total price of the selected product
-            total_price = PRODUCT[selected_product];
+            total_price = product_prices[selected_product];
 
             // Accept and validate coins until the total amount is reached
             while (inserted_amount < total_price) {
