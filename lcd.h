@@ -1,5 +1,5 @@
-#ifndef _KEYBOARD_H_
-#define _KEYBOARD_H_
+#ifndef _LCD_H_
+#define _LCD_H_
 
 void ConfigLCD(void);
 void WriteMSG(char msg[]);

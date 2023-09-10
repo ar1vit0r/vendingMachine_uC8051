@@ -1,6 +1,6 @@
 #include <at89x52.h>
-#include keyboard.h
-#include delay.h
+#include "delay.h"
+#include "keyboard.h"
 
 void CHECK_LINES(int *input) {      // loop to check the keyboard and get the input, until the user press '*' or '#' key. Need a logic to take 2 digits input.
     while(1) {
