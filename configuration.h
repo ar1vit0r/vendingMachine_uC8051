@@ -6,12 +6,14 @@
 #include "keyboard.h"
 #include "routines.h"
 #include "vendingMachine.h"
+#include "INT0.h"
 
 #include "lcd.c"
 #include "delay.c"
 #include "keyboard.c"
 #include "routines.c"
 #include "vendingMachine.c"
+#include "INT0.c"
 
 //keyboard 4x3
 #define LIN0 P1_0
@@ -49,5 +51,7 @@ int selected_product = 0;
 float total_price = 0.0;
 float inserted_amount = 0.0;
 int input = 0;
+
+int isMoneyinsert = 1;
 
 #endif
