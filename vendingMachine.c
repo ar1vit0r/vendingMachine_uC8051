@@ -8,24 +8,26 @@ void vendingMachine(int input, int selected_product, float total_price, float in
     Line2();
     WriteMSG(" Insert the money or select a product ");
     
-    CHECK_LINES(input);
+		while(isMoneyinsert){
+			CHECK_LINES(input);
 
-    if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
-        ConfigLCD();
-        Line1();
-        WriteMSG("* Transaction canceled *");
-        Line2();
-        WriteMSG(" Returning inserted money ");
-        //while(1);                                                                       
-        printf("Transaction canceled. Returning inserted money.\n");
-        returnInsertedMoney(inserted_amount);
-        //break;
-    }else{
-        if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
-            DIGIT1 = 0;
-        }else
-            DIGIT1 = input;
-    }
+			if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
+					ConfigLCD();
+					Line1();
+					WriteMSG("* Transaction canceled *");
+					Line2();
+					WriteMSG(" Returning inserted money ");
+					//while(1);                                                                       
+					printf("Transaction canceled. Returning inserted money.\n");
+					returnInsertedMoney(inserted_amount);
+					//break;
+			}else{
+					if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
+							DIGIT1 = 0;
+					}else
+							DIGIT1 = input;
+			}
+		}
 
     ConfigLCD();
     Line1();
