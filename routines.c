@@ -10,7 +10,7 @@ void start(){
 		}
 	}
 //Charge vetor with product prices
-	for (int i=0; i < MOTOR_MATRIX_SIZE*MOTOR_MATRIX_SIZE; i++){
+	for (int i=0; i < MOTOR_MATRIX_LINE*MOTOR_MATRIX_COLLUM; i++){
 		product_prices[i] = 1.0 * (i+1);
 	}
 //Set first message on display
