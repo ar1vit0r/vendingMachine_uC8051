@@ -1,3 +1,5 @@
+#ifndef _CONFIGURATION_H
+#define _CONFIGURATION_H
 
 #include "lcd.h"
 #include "delay.h"
@@ -37,3 +39,5 @@ int selected_product = 0;
 float total_price = 0.0;
 float inserted_amount = 0.0;
 int input = 0;
+
+#endif
