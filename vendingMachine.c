@@ -65,7 +65,7 @@ void vendingMachine() {
             
             if (inserted_amount == total_price) {
                 // No change to be dispensed
-                // Move servo motor associated with selected_product
+                // Move motor associated with selected_product
                 ConfigLCD();
                 Line1();
                 WriteMSG("* Dispensing product *");
@@ -74,7 +74,7 @@ void vendingMachine() {
                 return;
             } else if (inserted_amount > total_price) {
                 // Provide correct change and dispense the product
-                // Move servo motor associated with selected_product
+                // Move motor associated with selected_product
                 ConfigLCD();
                 Line1();
                 WriteMSG("* Dispeling change *");
