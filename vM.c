@@ -14,10 +14,11 @@
 //
 //======================================= 
 #include <stdio.h>
+#include <stdlib.h>
 #include <at89x52.h>
-#indlude lcd.h
-#include delay.h
-#include keyboard.h
+#include "lcd.h"
+#include "delay.h"
+#include "keyboard.h"
 
 
 // keyboard pins
