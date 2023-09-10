@@ -76,7 +76,7 @@ int CHECK_LINES() {      // loop to check the keyboard and get the input, until 
         if (!COL2) {
 						// '#' key
             DELAY(100);
-            return 12;;
+            return 12;
         }
     }
 }

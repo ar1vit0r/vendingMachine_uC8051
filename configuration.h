@@ -36,7 +36,7 @@
 #define MINUS1 P3_3
 #define MINUS10 P3_4
 
-float money = 0;
+extern float money;
 
 // LCD pins
 #define LCD			P2

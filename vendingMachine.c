@@ -6,6 +6,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
     
     while(!isMoneyinsert){
         input = CHECK_LINES();
+				IE = 0;
 
         if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
                 ConfigLCD();
@@ -59,6 +60,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
             total_price = product_prices[selected_product];
 
             // Accept and validate coins until the total amount is reached
+					IE = 1;
             while (inserted_amount < total_price) {
                 ConfigLCD();
                 Line1();
