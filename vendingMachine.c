@@ -8,7 +8,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
     Line2();
     WriteMSG(" Insert the money or select a product ");
     
-		while(isMoneyinsert){
+		while(!isMoneyinsert){
 			CHECK_LINES(input);
 
 			if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.

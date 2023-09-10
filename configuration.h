@@ -30,6 +30,14 @@
 #define MOTOR2 P0_2
 #define MOTOR3 P0_3
 
+//Money Insert
+#define PLUS1 P3_0
+#define PLUS10 P3_1
+#define MINUS1 P3_3
+#define MINUS10 P3_4
+
+float money = 0;
+
 // LCD pins
 #define LCD			P2
 #define EN			P3_7

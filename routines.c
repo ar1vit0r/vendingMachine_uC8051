@@ -3,6 +3,8 @@
 
 void start(){
 	P0 = 1;
+	IE = 1;
+	
 //Charge machine with products
 	for (int i=0; i < MOTOR_MATRIX_SIZE; i++){
 		for (int j=0; j < MOTOR_MATRIX_SIZE; j++){
@@ -91,4 +93,24 @@ void waitTheRestOfcash(float product_price, float inserted_amount) {
 int checkIfNeedChange(float inserted_amount, float product_price) { 
 	if (inserted_amount > product_price)
 		dispenseChange(inserted_amount-product_price);
+}
+
+float sumMoney(){
+	if (PLUS1)
+		money += 1;
+	if (PLUS10)
+		money += 10;
+	if (MINUS1){
+		money -= 1;
+		if (money < 0){
+			money += 1;
+		}
+	}
+	if (MINUS10)
+		money -= 10;{
+		if (money < 0){
+			money += 10;
+		}
+	}
+	return money;
 }
