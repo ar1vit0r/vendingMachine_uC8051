@@ -2,32 +2,28 @@
 
 void vendingMachine(int input, int selected_product, float total_price, float inserted_amount) {
 
-    ConfigLCD();
-    Line1();
-    WriteMSG("* Welcome to vending machine! *");
-    Line2();
-    WriteMSG(" Insert the money or select a product ");
+    start();
     
-		while(!isMoneyinsert){
-			CHECK_LINES(input);
+    while(!isMoneyinsert){
+        input = CHECK_LINES();
 
-			if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
-					ConfigLCD();
-					Line1();
-					WriteMSG("* Transaction canceled *");
-					Line2();
-					WriteMSG(" Returning inserted money ");
-					//while(1);                                                                       
-					printf("Transaction canceled. Returning inserted money.\n");
-					returnInsertedMoney(inserted_amount);
-					//break;
-			}else{
-					if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
-							DIGIT1 = 0;
-					}else
-							DIGIT1 = input;
-			}
-		}
+        if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
+                ConfigLCD();
+                Line1();
+                WriteMSG("* Transaction canceled *");
+                Line2();
+                WriteMSG(" Returning inserted money ");
+                //while(1);                                                                       
+                printf("Transaction canceled. Returning inserted money.\n");
+                returnInsertedMoney(inserted_amount);
+                //break;
+        }else{
+                if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
+                        DIGIT1 = 0;
+                }else
+                        DIGIT1 = input;
+        }
+    }
 
     ConfigLCD();
     Line1();
@@ -36,7 +32,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
     WriteMSG("  or type '*' to cancel ");
     //while(1);    
     
-    CHECK_LINES(input);
+    input = CHECK_LINES();
     if( input == 10 || input == 12) {                                     // case '*' to cancel the transaction and return any inserted money.
         ConfigLCD();
         Line1();
@@ -64,16 +60,11 @@ void vendingMachine(int input, int selected_product, float total_price, float in
 
             // Accept and validate coins until the total amount is reached
             while (inserted_amount < total_price) {
-                float inserted_coin;
                 ConfigLCD();
                 Line1();
                 WriteMSG("* Insert the money *");
                 Line2();
-                WriteMSG(" alguma coisa aqui");
-                //while(1);    
-                printf("Insert a coin: ");
-                scanf("%f", &inserted_coin);
-                inserted_amount += inserted_coin;
+                WriteMSG(" Insert a coin: ");
             }
             
             if (inserted_amount == total_price) {
@@ -83,10 +74,8 @@ void vendingMachine(int input, int selected_product, float total_price, float in
                 Line1();
                 WriteMSG("* Dispensing product *");
                 Line2();
-                WriteMSG(" Thank you for using the vending machine ");
-                //while(1);
-                printf("Thank you for using the vending machine!\n");
-                //break;
+                WriteMSG(" Thank you ");
+                return;
             } else if (inserted_amount > total_price) {
                 // Provide correct change and dispense the product
                 // Move servo motor associated with selected_product
@@ -94,12 +83,8 @@ void vendingMachine(int input, int selected_product, float total_price, float in
                 Line1();
                 WriteMSG("* Dispeling change *");
                 Line2();
-                WriteMSG(" Thank you for using the vending machine ");
-                //while(1);        
-                float change = inserted_amount - total_price;
-                printf("Change: $%.2f\n", change);
-                printf("Thank you for using the vending machine!\n");
-                //break;
+                WriteMSG(" Thank you ");      
+                return;
             } else {
                 // The amount isn't correct, continue accepting money
                 while(inserted_amount < total_price) {
@@ -109,13 +94,9 @@ void vendingMachine(int input, int selected_product, float total_price, float in
                     WriteMSG("* Insufficient funds. *");
                     Line2();
                     WriteMSG(" Please insert more coins ");
-                    //while(1);        
-                    printf("Insert a coin: ");
-                    scanf("%f", &inserted_coin);
-                    inserted_amount += inserted_coin;
-                    printf("Insufficient funds. Please insert more coins.\n");
                     waitTheRestOfcash(total_price, inserted_amount);
                 }
+                return;
             }
         } else {
             ConfigLCD();
@@ -123,8 +104,7 @@ void vendingMachine(int input, int selected_product, float total_price, float in
             WriteMSG("* Product out of stock. *");
             Line2();
             WriteMSG(" Returning inserted money ");
-            //while(1);      
-            printf("Product out of stock.\n");
+            return;
         }
     } else {
         ConfigLCD();
@@ -132,23 +112,13 @@ void vendingMachine(int input, int selected_product, float total_price, float in
         WriteMSG("* Invalid input. Please enter a valid product number (01-30) *");
         Line2();
         WriteMSG(" '*' to cancel, or '#' to confirm ");
-        //while(1);      
-        printf("Invalid input. Please enter a valid product number (01-30), '*' to cancel, or '#' to confirm.\n");
+        return;
     }
 
     ConfigLCD();
     Line1();
-    WriteMSG("* Value of product:  *");
+    WriteMSG("* Deu problema *");
     Line2();
-    WriteMSG(" waiting for the money ");
-    //while(1);    
-    //FUNC ESPERA DO DINHEIRO
-    //O DINHEIRO � SUFICIENTE
-        //Y FUNC RODA O MOTOR CODIGO
-        //Y DEVOLVE O TROCO
-    //O DINHEIRO N � SUFICIENTE
-        //Y FUNC ESPERA O RESTO DO DINHEIRO
-        //Y FUNC RODA O MOTOR CODIGO
-        //Y DEVOLVE O TROCO
-return 0;
+    WriteMSG(" nao deveria chegar aqui ");
+    return;
 }
