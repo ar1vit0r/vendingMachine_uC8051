@@ -1,10 +1,8 @@
 #include <at89x52.h>
-#include "routines.h"
-#include "lcd.h"
-#include "delay.h"
 #include "configuration.h"
 
 void start(){
+	P0 = 1;
 //Charge machine with productis
 	for (int i=0; i < MOTOR_MATRIX_SIZE; i++){
 		for (int j=0; j < MOTOR_MATRIX_SIZE; j++){

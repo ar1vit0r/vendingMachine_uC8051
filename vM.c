@@ -13,22 +13,14 @@
 //										  Data: 12/09/2023			
 //
 //======================================= 
-#include <stdio.h>
+//#include <stdio.h>
 #include <at89x52.h>
-#include "lcd.h"
-#include "delay.h"
-#include "keyboard.h"
-#include "routines.h"
-#include "vendingMachine.h"
 #include "configuration.h"
 
 
 
-// Initialize servo motor positions for each product
-int servo_positions[30];
-
 // Define product prices
-float product_prices[30];
+float product_prices[9];
 
 void main() {
 	start();
@@ -36,7 +28,11 @@ void main() {
 	while(1){
 /////KEYBOARD
 		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÇÃO
+		if (CHECK_LINES()){
+			
+		}
 		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E DESABILITA A INTERRUPÇÃO DE ENTRADA DE DINHEIRO ATÉ COLOCAR 2ºCOD E PRESSIONAR ENTER (#)
+		
 		//PRESSIONADO #, HABILITA A INTERRUPÇÃO
 		//AVISA O PREÇO DO PRODUTO
 		//ESPERA POR 30S
@@ -85,27 +81,24 @@ void main() {
 								//VOLTA A CHECAR O KEYBOARD
 							//SE COLOCAR DINHEIRO
 								//VOLTA A INFORMAR A DIFERENÇA
-				
-		
-		
 		
 	}
     // Initialize servo_positions and product_prices arrays
-    int *selected_product = (int *)malloc(sizeof(int));
-    *selected_product = 0;
-    float *total_price = (float *)malloc(sizeof(float));
-    *total_price = 0.0;
-    float *inserted_amount = (float *)malloc(sizeof(float));
-    *inserted_amount = 0.0;
-    int *input = malloc(sizeof(int));
-    *input = 0;
+//    int *selected_product = (int *)malloc(sizeof(int));
+//    *selected_product = 0;
+//    float *total_price = (float *)malloc(sizeof(float));
+//    *total_price = 0.0;
+//    float *inserted_amount = (float *)malloc(sizeof(float));
+//    *inserted_amount = 0.0;
+//    int *input = malloc(sizeof(int));
+//    *input = 0;
 
-    vendingMachine(input, selected_product, total_price, inserted_amount);
+//    vendingMachine(input, selected_product, total_price, inserted_amount);
 
-    free(selected_product);
-    free(total_price);
-    free(inserted_amount);
-    free(input);
+//    free(selected_product);
+//    free(total_price);
+//    free(inserted_amount);
+//    free(input);
 
     //return 0;
 }

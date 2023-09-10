@@ -1,6 +1,5 @@
 #include <at89x52.h>
-#include "lcd.h"
-#include "delay.h"
+#include "configuration.h"
 
 void ConfigLCD(void) {
 	LCD = 0x38;

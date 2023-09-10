@@ -1,5 +1,9 @@
-#ifndef _LCD_H_
-#define _LCD_H_
+
+#include "lcd.h"
+#include "delay.h"
+#include "keyboard.h"
+#include "routines.h"
+#include "vendingMachine.h"
 
 //keyboard 4x3
 #define LIN0 P1_0
@@ -28,4 +32,3 @@ int PRODUCT[MOTOR_MATRIX_SIZE][MOTOR_MATRIX_SIZE];
 int DIGIT1;
 int DIGIT2;
 
-#endif
