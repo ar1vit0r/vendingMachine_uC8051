@@ -18,9 +18,6 @@
 #include "configuration.h"
 #include "routines.c"
 
-// Define product prices
-float product_prices[9];
-
 void main() {
 	start();
 	

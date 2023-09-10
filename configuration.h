@@ -35,6 +35,9 @@ int PRODUCT[MOTOR_MATRIX_SIZE][MOTOR_MATRIX_SIZE];
 int DIGIT1 = 0;
 int DIGIT2 = 0;
 
+// Define product prices
+float product_prices[9];
+
 int selected_product = 0;
 float total_price = 0.0;
 float inserted_amount = 0.0;

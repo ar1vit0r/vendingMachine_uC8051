@@ -21,17 +21,17 @@ void store(int line, int coll, int qnt){
 	PRODUCT[line][colum] = qnt;
 }	
 
-void returnInsertedMoney_time(float *inserted_amount) {
+void returnInsertedMoney_time(float inserted_amount) {
 	
 	ConfigLCD();
     Line1();
     WriteMSG("* Time exceded *");
     Line2();
-    WriteMSG("%f.1 Returned amount ", *inserted_amount);
+    WriteMSG("%f.1 Returned amount ", inserted_amount);
 }
 
-void dispenseProduct(int *selected_product) {
-	int temp_product = *selected_product;
+void dispenseProduct(int selected_product) {
+	int temp_product = selected_product;
 	ConfigLCD();
     Line1();
     WriteMSG("* Working on demand *");
@@ -42,9 +42,9 @@ void dispenseProduct(int *selected_product) {
 	int i = 0;
 
 	// Converte decimal para bin�rio
-	while (*selected_product > 0) {
-			binary[i] = *selected_product % 2;
-			*selected_product = *selected_product / 2;
+	while (selected_product > 0) {
+			binary[i] = selected_product % 2;
+			selected_product = selected_product / 2;
 			i++;
 	}
 	MOTOR0 = binary[0];
@@ -57,7 +57,7 @@ void dispenseProduct(int *selected_product) {
     Line1();
     WriteMSG("Your product is ");
     Line2();
-    WriteMSG(" %d ", *temp_product);
+    WriteMSG(" %d ", temp_product);
 	void DELAY(3000);
 }
 
@@ -70,21 +70,21 @@ void dispenseChange(float change) {
 	void DELAY(5000);
 }
 
-void dispenseProductAndChange(int *selected_product, float change) {
-	dispenseProduct(*selected_product);
+void dispenseProductAndChange(int selected_product, float change) {
+	dispenseProduct(selected_product);
 	dispenseChange(change);
 }
 
-void waitTheRestOfcash(float *product_price, float *inserted_amount) {
+void waitTheRestOfcash(float product_price, float inserted_amount) {
 	ConfigLCD();
 	Line1();
 	WriteMSG("Insert the rest of");
 	Line2();
-	WriteMSG(" %f.1 ", *product_price-*inserted_amount);
+	WriteMSG(" %f.1 ", product_price-inserted_amount);
 	void DELAY(3000);
 }
 
-int checkIfNeedChange(float *inserted_amount, float *product_price) { 
-	if (*inserted_amount > *product_price)
-		dispenseChange(*inserted_amount-*product_price);
+int checkIfNeedChange(float inserted_amount, float product_price) { 
+	if (inserted_amount > product_price)
+		dispenseChange(inserted_amount-product_price);
 }
