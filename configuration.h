@@ -6,16 +6,9 @@
 #include "keyboard.h"
 #include "routines.h"
 #include "keyboardInput.h"
+#include "cashInput.h"
 #include "int0.h"
 #include "int1.h"
-
-#include "lcd.c"
-#include "delay.c"
-#include "keyboard.c"
-#include "routines.c"
-#include "keyboardInput.c"
-#include "int0.c"
-#include "int1.c"
 
 //keyboard 4x3
 #define LIN0 P1_0
