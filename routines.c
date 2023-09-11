@@ -96,7 +96,7 @@ int checkIfNeedChange(float inserted_amount, float product_price) {
 		dispenseChange(inserted_amount-product_price);
 }
 
-float sumMoney(){
+int sumMoney(){
 	if (PLUS1)
 		money += 1;
 	if (PLUS10)

@@ -62,6 +62,10 @@ void vendingMachine() {
 							WriteMSG("* Insert the money *");
 							Line2();
 							WriteMSG(" %d ", &inserted_amount);
+							if(isMoneyinsert){
+								isMoneyinsert = 0;
+								inserted_amount += sumMoney();
+							}
             }
 						EX0 = 1;
             

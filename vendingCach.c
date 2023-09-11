@@ -1,9 +1,12 @@
 #include "configuration.h"
 
-void vendingMachine() {
+void vendingCache() {
 
 	start();
 
+	//Insert money
+	EX0=0;
+	//Cancel operation
 	EX1=0;
 	
 	while (FLAG){
@@ -15,37 +18,32 @@ void vendingMachine() {
 		WriteMSG("* Press '*' for continue *");
 		Line2();
 		WriteMSG(" Inserted amount %d ", &inserted_amount);
-		
+		if(isMoneyinsert){
+			isMoneyinsert = 0;
+			inserted_amount += sumMoney();
+		}
 	}
+	EX0=1
 	EX1=1;
-	
-	
-	
-	
-	
-	
-	
-	
-	IE = 1;
+//===================DIGIT 1
+	ConfigLCD();
+    Line1();
+    WriteMSG("* Insert the first digit *");
+    Line2();
+    WriteMSG("  type '*' or '#' to cancel ");
 	input = CHECK_LINES();
-	if (input == 77)
+	//CANCELA E DEVOLVE O DINHEIRO
+	if (input == 10 || input == 12){
+		cancelRequest();
+		returnInsertedMoney(inserted_amount);
 		return;
-	IE = 0;
-	// case '*' or '#' to cancel the transaction and return any inserted money.
-	if( input == 10 || input == 12) {                                     
-			ConfigLCD();
-			Line1();
-			WriteMSG("* Transaction canceled *");
-			Line2();
-			returnInsertedMoney(inserted_amount);
-			return;
 	}else{
-			if( input == 11) {                                                // case '0' to cancel the transaction and return any inserted money.
+		 // case '0' to cancel the transaction and return any inserted money.
+			if( input == 11) {                                               
 					DIGIT1 = 0;
 			}else
 					DIGIT1 = input;
-	}
-
+//===================DIGIT 2
     ConfigLCD();
     Line1();
     WriteMSG("* Insert the second digit *");
@@ -59,11 +57,13 @@ void vendingMachine() {
         returnInsertedMoney(inserted_amount);
         return;
     }else{
-        if( input == 11) {                                               // case '0' to cancel the transaction and return any inserted money.
+			// case '0' to cancel the transaction and return any inserted money.
+        if( input == 11) {                                               
             DIGIT2 = 0;
         }else
             DIGIT2 = input;
     }
+//===================DIGIT 1 + DIGIT 2
 
     input = DIGIT1 * 10 + DIGIT2;                                        // the value of the input is the concat of the 2 digits       
     selected_product = PRODUCT[DIGIT1][DIGIT2];                          // here we have the stock of selected product
