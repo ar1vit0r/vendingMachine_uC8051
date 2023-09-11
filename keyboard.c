@@ -1,4 +1,3 @@
-#include <at89x52.h>
 #include "configuration.h"
 
 int CHECK_LINES() {      // loop to check the keyboard and get the input, until the user press '*' or '#' key. Need a logic to take 2 digits input.

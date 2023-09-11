@@ -1,4 +1,3 @@
-#include <at89x52.h>
 #include "configuration.h"
 
 void Delay5us(void){
@@ -11,7 +10,7 @@ void Delay5ms(void){
 }
 
 void DELAY(unsigned int ms) {       // delay vai ser diferente do esperado, mas deveria funcionar
-	TMOD |= 0x01;					// A operaço OU preserva alguma eventual configuraço previa do T/C 1.
+	TMOD |= 0x01;					// A operaï¿½o OU preserva alguma eventual configuraï¿½o previa do T/C 1.
 	
 	while(ms){
 		TH0 = 0xFE;					// Valor de recarga para 1 ms @ f = 12 MHz (i.e. 64535).

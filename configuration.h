@@ -1,14 +1,18 @@
 #ifndef _CONFIGURATION_H
 #define _CONFIGURATION_H
 
+#include <at89x52.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "lcd.h"
 #include "delay.h"
 #include "keyboard.h"
 #include "routines.h"
 #include "keyboardInput.h"
 #include "cashInput.h"
-#include "int0.h"
-#include "int1.h"
+#include "INT0.h"
+#include "INT1.h"
 
 //keyboard 4x3
 #define LIN0 P1_0
