@@ -22,9 +22,10 @@ void main() {
 	
 	while(1){
 		
-		vendingMachine();
 		if (ISMONEYINSERT)
-			vendingCach();
+			cashInput();
+		else
+			keyboardInput();
 		
 /////KEYBOARD
 		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÇÃO

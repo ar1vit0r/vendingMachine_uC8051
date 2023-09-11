@@ -1,6 +1,6 @@
 #include "configuration.h"
 
-void vendingCache() {
+void cashInput() {
 
 	start();
 

@@ -1,6 +1,6 @@
 #include "configuration.h"
 
-void vendingMachine() {
+void keyboardInput() {
 
     start();
     EX0 = 0;
@@ -101,7 +101,7 @@ void vendingMachine() {
     } else {
         ConfigLCD();
         Line1();
-        WriteMSG("* Invalid input. (01~09) *");
+        WriteMSG("* Invalid input. (01-09) *");
         Line2();
         WriteMSG(" '*' to cancel, or '#' to confirm ");
         return;

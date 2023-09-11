@@ -5,7 +5,7 @@
 #include "delay.h"
 #include "keyboard.h"
 #include "routines.h"
-#include "vendingMachine.h"
+#include "keyboardInput.h"
 #include "int0.h"
 #include "int1.h"
 
@@ -13,7 +13,7 @@
 #include "delay.c"
 #include "keyboard.c"
 #include "routines.c"
-#include "vendingMachine.c"
+#include "keyboardInput.c"
 #include "int0.c"
 #include "int1.c"
 
