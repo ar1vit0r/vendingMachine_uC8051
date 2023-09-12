@@ -1,13 +1,13 @@
 // ======================================= Universidade Federal de Pelotas
-// ======================================= Centro de Desenvolvimento Tecnológico
-// ======================================= Bacharelado em Engenharia de Computação
+// ======================================= Centro de Desenvolvimento TecnolÃ³gico
+// ======================================= Bacharelado em Engenharia de ComputaÃ§Ã£o
 // ======================================= Disciplina: 22000279 --- Microcontroladores
 // ======================================= Turma: 2023/1 --- M1
 // ======================================= Professor: Alan Rossetto
 //
-//										  Descrição: Trabalho Final
+//										  DescriÃ§Ã£o: Trabalho Final
 //
-// 										  Identificação:
+// 										  IdentificaÃ§Ã£o:
 // 										  Nome da(o) aluna(o) & Matricula: Ari Vitor da Silva Lazzarotto, 17200917
 // 										  Nome da(o) aluna(o) & Matricula: Adriel Correa Matielo, 16105321
 //										  Data: 12/09/2023			
@@ -107,6 +107,9 @@ void DELAY(unsigned int ms);
 void DELAY1_MS(unsigned int ms);
 void waiting();
 
+int binary[3];
+int i,j;
+
 void main(void) {
 	start();
 	
@@ -172,7 +175,8 @@ void main(void) {
 								Line1();
 								WriteMSG("* Insert the money *");
 								Line2();
-								WriteMSG(" %d ", &inserted_amount);
+								WriteMSG(" inserted_amount: ");	// dont show the inserted money
+
 								if(isMoneyinsert){
 									isMoneyinsert = 0;
 									inserted_amount += sumMoney();
@@ -285,7 +289,7 @@ void main(void) {
               Line1();
 							WriteMSG("* Insert the money *");
 							Line2();
-							WriteMSG(" %d ", &inserted_amount);
+							WriteMSG(" inserted_amount "); 					// wrong
 							if(isMoneyinsert){
 								isMoneyinsert = 0;
 								inserted_amount += sumMoney();
@@ -340,10 +344,10 @@ void main(void) {
 }
 		
 /////KEYBOARD
-		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÇÃO
-		//CHAMA A ROTINA DE INSERÇÃO DE CÓDIGO E 2ºCOD E PRESSIONAR ENTER (#)
-		//PRESSIONADO #, HABILITA A INTERRUPÇÃO
-		//AVISA O PREÇO DO PRODUTO
+		//CHECA KEYBOARD, CASO HAJA ENTRADA DE 1 DIGITO (DIFERENTE DE * OU #), DESABILITA A INTERRUPÃ‡ÃƒO
+		//CHAMA A ROTINA DE INSERÃ‡ÃƒO DE CÃ“DIGO E 2ÂºCOD E PRESSIONAR ENTER (#)
+		//PRESSIONADO #, HABILITA A INTERRUPÃ‡ÃƒO
+		//AVISA O PREÃ‡O DO PRODUTO
 		//ESPERA POR 30S
 			//WHILE
 				//SE COLOCAR DINHEIRO < VALOR DO PRODUTO
@@ -351,45 +355,45 @@ void main(void) {
 				//DO CONTRARIO DEVOLVE O DINHEIRO E AVISA DO ERRO
 		//VOLTA A CHECAR O KEYBOARD
 /////DINHEIRO
-		//SE HOUVER INTERRUPÇÃO DE DINHEIRO
+		//SE HOUVER INTERRUPÃ‡ÃƒO DE DINHEIRO
 		//INFORMA A QUANTIA INSERIDA
 		//ESPERA 30S
-			//SE NAO HOUVER MAIS INTERAÇÃO DEVOLVE O DINHEIRO
-			//SE CANCELAR (*) A OPERAÇÃO
+			//SE NAO HOUVER MAIS INTERAÃ‡ÃƒO DEVOLVE O DINHEIRO
+			//SE CANCELAR (*) A OPERAÃ‡ÃƒO
 				//DEVOLVE O DINHEIRO
 				//VOLTA A CHECAR O KEYBOARD
 			//SE ACRESCENTAR DINHEIRO, ATUALIZA A QUANTIA INSERIDA
 				//ESPERA 30S
 			//SE PRESSIONAR QUALQUER DIGITO
-				//PEDE O 2º DIGITO
+				//PEDE O 2Âº DIGITO
 				//ESPERA 30S
-				//SE CANCELAR (*) A OPERAÇÃO
+				//SE CANCELAR (*) A OPERAÃ‡ÃƒO
 					//DEVOLVE O DINHEIRO
 					//VOLTA A CHECAR O KEYBOARD
-				//SE NAO HOUVER MAIS INTERAÇÃO DEVOLVE O DINHEIRO
+				//SE NAO HOUVER MAIS INTERAÃ‡ÃƒO DEVOLVE O DINHEIRO
 					//VOLTA A CHECAR O KEYBOARD
-				//SE COLOCAR O 2º DIGITO
-				//INFORMA O VALOR E A DIFERENÇA
+				//SE COLOCAR O 2Âº DIGITO
+				//INFORMA O VALOR E A DIFERENÃ‡A
 					//ESPERA 30S
-					//SE CANCELAR (*) A OPERAÇÃO
+					//SE CANCELAR (*) A OPERAÃ‡ÃƒO
 						//DEVOLVE O DINHEIRO
 						//VOLTA A CHECAR O KEYBOARD
 					
 					//SE PRESCIONAR ENTER (#)
-						//INFORMA A DIFERENÇA (VALOR INSERIDO - VALOR DO PRODUTO)
+						//INFORMA A DIFERENÃ‡A (VALOR INSERIDO - VALOR DO PRODUTO)
 						//SE A DIFERENA FOR 0
 							//FORNECE O PRODUTO
-						//SE A DIFERENÇA FOR <0
+						//SE A DIFERENÃ‡A FOR <0
 							//FORNECE O PRODUTO
 							//DEVOLVE O TROCO
-						//SE A DIFERENÇA FOR >0
+						//SE A DIFERENÃ‡A FOR >0
 							//INFORMA A QUANTIA QUE FALTA
 							//ESERA 30S
-							//SE CANCELAR (*) A OPERAÇÃO
+							//SE CANCELAR (*) A OPERAÃ‡ÃƒO
 								//DEVOLVE O DINHEIRO
 								//VOLTA A CHECAR O KEYBOARD
 							//SE COLOCAR DINHEIRO
-								//VOLTA A INFORMAR A DIFERENÇA
+								//VOLTA A INFORMAR A DIFERENÃ‡A
 		
 	}
     // Initialize servo_positions and product_prices arrays
@@ -435,18 +439,18 @@ void DELAY1_MS(unsigned int ms) {
 		ms--;
 	}
 }
-void waiting() {
+void DELAY_30(unsigned int time) {
 	//mode 01 for timer1
 	TMOD |= 0x10;
-	int waitingTime = 30;
-	while(waitingTime){
+
+	while(time){
 		TH1 = 0xFE;
 		TL1 = 0x18;
 		TR1 = 1;
 		while(!TF1);
 		TF1 = 0;
 		TR1 = 0;
-		ms--;
+		time--;
 	}
 }
 
@@ -460,7 +464,7 @@ int CHECK_LINES() {      // loop to check the keyboard and get the input, until 
         LIN3 = 1;
         
         if (!COL0) {
-            DELAY(100)
+            DELAY(100);
 						return 1;
         }
         if (!COL1) {
@@ -579,22 +583,22 @@ void WrCHAR(void){
 }
 
 void start(){
-	P0 = 1;
-	EA = 1;
-	//IE [EA - - ES ET1 EX1 ET0 EX0]
+//IE [EA - - ES ET1 EX1 ET0 EX0]
+		P0 = 1;
+		EA = 1;
 	
 //Charge machine with products
-	for (int i=0; i < MOTOR_MATRIX_SIZE; i++){
-		for (int j=0; j < MOTOR_MATRIX_SIZE; j++){
-			store(i, j, MAX_PRODUCT);
+		for ( i=0; i < MOTOR_MATRIX_LINE; i++){
+			for ( j=0; j < MOTOR_MATRIX_COLLUM; j++){
+				store(i, j, MAX_PRODUCT);
+			}
 		}
-	}
 //Charge vetor with product prices
-	for (int i=0; i < MOTOR_MATRIX_LINE*MOTOR_MATRIX_COLLUM; i++){
-		product_prices[i] = 1.0 * (i+1);
-	}
+		for (i=0; i < MOTOR_MATRIX_LINE*MOTOR_MATRIX_COLLUM; i++){
+			product_prices[i] = 1.0 * (i+1);
+		}
 //Set first message on display
-	ConfigLCD();
+		ConfigLCD();
     Line1();
     WriteMSG("* Insert the COD of product *");
     Line2();
@@ -602,7 +606,7 @@ void start(){
 }
 
 void store(int line, int coll, int qnt){
-	PRODUCT[line][colum] = qnt;
+	PRODUCT[MOTOR_MATRIX_LINE][MOTOR_MATRIX_COLLUM] = qnt;
 }	
 
 void returnInsertedMoney_time(float inserted_amount) {
@@ -611,19 +615,18 @@ void returnInsertedMoney_time(float inserted_amount) {
     Line1();
     WriteMSG("* Time exceded *");
     Line2();
-    WriteMSG("%f.1 Returned amount ", inserted_amount);
+    WriteMSG("%f.1 Returned amount ");									// dont work
 }
 
 void dispenseProduct(int selected_product) {
 	int temp_product = selected_product;
 	ConfigLCD();
-    Line1();
-    WriteMSG("* Working on demand *");
-    Line2();
-    WriteMSG(" %d ", temp_product);
+	Line1();
+	WriteMSG("* Working on demand *");
+	Line2();
+	WriteMSG(" %d temp_product");												// dont work
 	
-	int binary[3];
-	int i = 0;
+	i = 0;
 
 	// Converte decimal para bin?rio
 	while (selected_product > 0) {
@@ -635,14 +638,14 @@ void dispenseProduct(int selected_product) {
 	MOTOR1 = binary[1];
 	MOTOR2 = binary[2];
 	MOTOR3 = binary[3];
-	void DELAY(5000);
+	DELAY(5000);
 	
 	ConfigLCD();
-    Line1();
-    WriteMSG("Your product is ");
-    Line2();
-    WriteMSG(" %d ", temp_product);
-	void DELAY(3000);
+	Line1();
+	WriteMSG("Your product is ");
+	Line2();
+	WriteMSG(" %d temp_product");									// dont work
+	DELAY(3000);
 }
 
 void dispenseChange(float change) { 
@@ -650,8 +653,8 @@ void dispenseChange(float change) {
     Line1();
     WriteMSG("Your change is");
     Line2();
-    WriteMSG("%f.1 ", change);
-	void DELAY(5000);
+    WriteMSG("%f.1 troco");								// dont work
+	  DELAY(5000);
 }
 
 void dispenseProductAndChange(int selected_product, float change) {
@@ -664,8 +667,8 @@ void waitTheRestOfcash(float product_price, float inserted_amount) {
 	Line1();
 	WriteMSG("Insert the rest of");
 	Line2();
-	WriteMSG(" %f.1 ", product_price-inserted_amount);
-	void DELAY(3000);
+	WriteMSG(" %f.1 product_price-inserted_amount");								// dont work
+	DELAY(3000);
 }
 
 int checkIfNeedChange(float inserted_amount, float product_price) { 
