@@ -648,8 +648,29 @@ LINK/LOCATE RUN COMPLETE.  76 WARNING(S),  0 ERROR(S)
     SYMBOL:  MONEY
     MODULE:  .\Objects\main.obj (MAIN)
     ADDRESS: 1269H
-*** FATAL ERROR L250: CODE SIZE LIMIT IN RESTRICTED VERSION EXCEEDED
+*** FATAL ERROR L250: CODE SIZE LIMIT IN RESTRICTED VERSION EXCEEDED                    <------------------------------ here the problem
     MODULE:  .\Objects\main.obj (-----)
     LIMIT:   0800H BYTES
 Target not created.
 Build Time Elapsed:  00:00:00
+
+
+IDE-Version:
+µVision V5.38.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+
+License Information:
+Ari Vitor da Silva Lazzarotto
+UFPEL
+LIC=----
+
+Tool Version Numbers:
+Toolchain:        PK51 Prof. Develpers Kit  Version: 9.60.7.0
+Toolchain Path:    D:\Programas\C51\BIN
+C Compiler:         C51.exe    V9.60.7.0
+Assembler:          A51.exe    V8.2.7.0
+Linker/Locator:     BL51.exe    V6.22.4.0
+Librarian:             LIB51.exe    V4.30.1.0
+Hex Converter:      OH51.exe    V2.7.0.0
+CPU DLL:               S8051.DLL            V3.125.1.0
+Dialog DLL:         DP51.DLL             V2.69.0.0
