@@ -1,0 +1,46 @@
+Build started: Project: vendingMachine
+Build target 'Target 1'
+compiling main.c...
+main.c(175): error C208: '_WriteMSG': too many actual parameters
+main.c(288): error C208: '_WriteMSG': too many actual parameters
+main.c(441): error C141: syntax error near 'int', expected '__asm'
+main.c(441): error C202: 'waitingTime': undefined identifier
+main.c(442): error C202: 'waitingTime': undefined identifier
+main.c(449): error C202: 'ms': undefined identifier
+main.c(464): error C141: syntax error near 'return', expected ';'
+main.c(587): error C141: syntax error near 'int', expected 'sizeof'
+main.c(587): error C202: 'i': undefined identifier
+main.c(587): error C202: 'i': undefined identifier
+main.c(587): error C202: 'i': undefined identifier
+main.c(587): error C141: syntax error near ')', expected ';'
+main.c(588): error C141: syntax error near 'int', expected 'sizeof'
+main.c(588): error C202: 'j': undefined identifier
+main.c(588): error C202: 'j': undefined identifier
+main.c(588): error C141: syntax error near ')', expected ';'
+main.c(593): error C141: syntax error near 'int', expected 'sizeof'
+main.c(593): error C202: 'i': undefined identifier
+main.c(593): error C202: 'i': undefined identifier
+main.c(593): error C202: 'i': undefined identifier
+main.c(593): error C141: syntax error near ')', expected ';'
+main.c(605): error C202: 'colum': undefined identifier
+main.c(614): error C208: '_WriteMSG': too many actual parameters
+main.c(623): error C208: '_WriteMSG': too many actual parameters
+main.c(625): error C141: syntax error near 'int', expected '__asm'
+main.c(625): error C202: 'binary': undefined identifier
+main.c(626): error C141: syntax error near 'int', expected '__asm'
+main.c(626): error C202: 'i': undefined identifier
+main.c(630): error C202: 'i': undefined identifier
+main.c(632): error C202: 'i': undefined identifier
+main.c(634): error C202: 'binary': undefined identifier
+main.c(635): error C202: 'binary': undefined identifier
+main.c(636): error C202: 'binary': undefined identifier
+main.c(637): error C202: 'binary': undefined identifier
+main.c(638): error C141: syntax error near 'void', expected '__asm'
+main.c(644): error C208: '_WriteMSG': too many actual parameters
+main.c(645): error C141: syntax error near 'void', expected '__asm'
+main.c(653): error C208: '_WriteMSG': too many actual parameters
+main.c(654): error C141: syntax error near 'void', expected '__asm'
+main.c(667): error C208: '_WriteMSG': too many actual parameters
+main.c(668): error C141: syntax error near 'void', expected '__asm'
+Target not created.
+Build Time Elapsed:  00:00:00
