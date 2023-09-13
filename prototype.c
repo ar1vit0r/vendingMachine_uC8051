@@ -65,7 +65,7 @@
 #define COD_PRODUCT_8 22
 //value of times in ms
 #define TIME_WAIT 10000
-#define LITTLE_WAIT 3000
+#define LITTLE_WAIT 1000
 
 //LCD
 void ConfigLCD();
@@ -434,17 +434,17 @@ void msg_done(){
 }
 
 void start() {
-    msg_Start();
     P0 = 1;
-    IE = 0x8F;
+    IE = 0xFF;
+
 
     TMOD = 0x11;
-    TR0 = 0;
-    TF0 = 0;
-    TR1 = 0;
-    TF1 = 0;
-    timer0end = 1;
-    timer1end = 1;
+    TH0 = 0xFC;
+    TL0 = 0x18;
+    TH1 = 0xFC;
+    TL1 = 0x18;
+    timer0end = 0;
+    timer1end = 0;
 
     digit1 = 77;
     digit2 = 77;
@@ -452,6 +452,7 @@ void start() {
     price = 0;
     amount = 0;
     moneyIsReady = 0;
+    msg_Start();
 }
 int codeValidation(){
     for(dispenser = 0; dispenser <= MAX_PRODUCT; dispenser++) {
@@ -577,30 +578,28 @@ void Delay5us(){
 //Wait until delay ends
 void delayMs0(unsigned int ms){          //use timer0 Mode01 (16 bits)
     timer0(ms);
-    while(!timer0end){}
-    TR0 = 0;
+    while(timer0end){}
 }
 //Wait until delay ends
 void delayMs1(unsigned int ms){          //use timer1 Mode01 (16 bits)
     timer1(ms);
-    while(!timer1end){}
-    TR1 = 0;
+    while(timer1end){}
 }
 //like set an alarm
 void timer0(unsigned int ms){            //use timer0 Mode01 (16 bits)
-    TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    timer0end = ms;
+    TH0 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
     TL0 = 0x18;
     TF0 = 0;
     TR0 = 1;
-    timer0end = ms;
 }
 //like set an alarm
 void timer1(unsigned int ms){            //use timer0 Mode01 (16 bits)
-    TH1 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    timer1end = ms;
+    TH1 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
     TL1 = 0x18;
     TR1 = 1;
     TF1 = 0;
-    timer1end = ms;
 }
 //interruptions
 
@@ -611,20 +610,20 @@ return;
 }
 void ISR_Timer0(void) interrupt 1{
     TF0 = 0;
-    TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    TH0 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
     TL0 = 0x18;
-    timer0end--;
+    timer0end = timer0end-1;
     if(!timer0end)
         TR0 = 0;
     return;
 }
 void ISR_Timer1(void) interrupt 3{
-    TF0 = 0;
-    TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
-    TL0 = 0x18;
+    TF1 = 0;
+    TH1 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    TL1 = 0x18;
     timer1end--;
     if(!timer1end)
-        TR0 = 0;
+        TR1 = 0;
     return;
 }
 
