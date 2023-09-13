@@ -16,6 +16,8 @@
 #include "C:\Program Files\Keil_v5\C51\INC\Atmel\at89x52.h"
 #include <stdio.h>
 
+unsigned int over_timer1;
+
 //pins P0
 #define MOTOR0 P0_0
 #define MOTOR1 P0_1
@@ -73,6 +75,26 @@ void Line1();
 void Line2();
 void WrCMD();
 void WrCHAR();
+void routine1_MSG();
+void msg_CLEANER();
+void msg_Start();
+void msg_InsertCode2();
+void msg_CanceledByUsr();
+void msg_Code2Required();
+void msg_Code2Insert();
+void msg_IllegalCode();
+void msg_TimeOut_Code2_WTMoney();
+void msg_insertMoney();
+void msg_ConfirmBuy();
+void msg_CanceledByUsr_money();
+void msg_dispenseProduct();
+void msg_timeoutWithMoney();
+void msg_WorkingOnDispenser();
+void msg_done();
+void WriteMSG_DIGIT2(char msg[]);
+void WriteMSG_DIGIT1(char msg[]);
+void WriteMSG_Change(char msg[]);
+void WriteMSG_Amount(char msg[]);
 
 //timers
 void timer0(unsigned int ms);   //like an alarm
@@ -86,13 +108,17 @@ void start();                   //start registers and variables
 //unsigned int startMoney();    //start machine with money
 unsigned int startCode();       //start machine with code
 
-
+int codeValidation();
+int sumOfMoney();
+unsigned int change();
 
 unsigned int giveMeTheMoney();  //request money for product | when nows the code
 void dispenseProduct();         //set motors of respective COD_PRODUCT
 void convertIntToBinary();      //
 
 unsigned int scanKeyboard();    //scan keyboard 4x3
+
+
 
 //flags of interruption 8051
 unsigned int TIMER0;            //Flag TF0
@@ -137,21 +163,21 @@ void main() {
 
 unsigned int scanKeyboard() {
     while(1) {
-        delayMs0(100);
+        Delay5us();
         LINA = 0;
         LINB = 1;
         LINC = 1;
         LIND = 1;
         if (!COL1) {
-            delayMs0(100);
+            Delay5us();
             return 1;
         }
         if (!COL2) {
-            delayMs0(100);
+            Delay5us();
             return 2;
         }
         if (!COL3) {
-            delayMs0(100);
+            Delay5us();
             return 3;
         }
 
@@ -160,15 +186,15 @@ unsigned int scanKeyboard() {
         LINC = 1;
         LIND = 1;
         if (!COL1) {
-            delayMs0(100);
+            Delay5us();
             return 4;
         }
         if (!COL2) {
-            delayMs0(100);
+            Delay5us();
             return 5;
         }
         if (!COL3) {
-            delayMs0(100);
+            Delay5us();
             return 6;
         }
 
@@ -177,15 +203,15 @@ unsigned int scanKeyboard() {
         LINC = 0;
         LIND = 1;
         if (!COL1) {
-            delayMs0(100);
+            Delay5us();
             return 7;
         }
         if (!COL2) {
-            delayMs0(100);
+            Delay5us();
             return 8;
         }
         if (!COL3) {
-            delayMs0(100);
+            Delay5us();
             return 9;
         }
 
@@ -195,17 +221,17 @@ unsigned int scanKeyboard() {
         LIND = 0;
         if (!COL1) {
             //'*' key
-            delayMs0(100);
+            Delay5us();
             return 10;
         }
         if (!COL2) {
             // '0' key
-            delayMs0(100);
+            Delay5us();
             return 11;
         }
         if (!COL3) {
             // '#' key
-            delayMs0(100);
+            Delay5us();
             return 12;
         }
         if (TIMER1)
@@ -267,6 +293,30 @@ void WriteMSG_DIGIT2(char msg[]){
         WrCHAR();
     }
 }
+void WriteMSG_Amount(char msg[]){
+    unsigned char i;
+    for(i = 0; i <= 16; i++){
+        if(i==7) {
+            LCD = '0' + amount/10;
+        }else if(i==8)
+                LCD = '0' + amount%10;
+        else
+            LCD = msg[i];
+        WrCHAR();
+    }
+}/*
+void WriteMSG_Change(char msg[]){
+    unsigned char i;
+    for(i = 0; i <= 16; i++){
+        if(i==7) {
+            LCD = '0' + amount/10;
+        }else if(i==8)
+            LCD = '0' + amount%10;
+        else
+            LCD = msg[i];
+        WrCHAR();
+    }
+}*/
 void Line1(){
     LCD = 0x00;
     WrCMD();
@@ -289,15 +339,17 @@ void WrCHAR(){
     EN = 0;
     delayMs0(5);
 }
-
+void routine1_MSG(){
+    msg_CLEANER();
+    ConfigLCD();
+    Line1();
+}
 void msg_CLEANER(){
     LCD = 0x01;
     WrCMD();
 }
 void msg_Start(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     delayMs0(5);
     WriteMSG(" Insert product ");
     Line2();
@@ -305,104 +357,78 @@ void msg_Start(){
     WriteMSG(" code or money  ");
 }
 void msg_InsertCode2(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("   Second code  ");
     Line2();
     WriteMSG_DIGIT1("                ");
 }
 void msg_CanceledByUsr(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("    Canceled    ");
     Line2();
     WriteMSG("  By custumer   ");
 }
 void msg_Code2Required(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("   Second code! ");
     Line2();
     WriteMSG("    # Denied!   ");
 }
 void msg_Code2Insert(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("  Product code: ");
     Line2();
     WriteMSG_DIGIT2("                ");
 }
 void msg_IllegalCode(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("Illegal Operatio");
     Line2();
     WriteMSG(" Code not exist ");
 }
 void msg_TimeOut_Code2_WTMoney(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG(" Time is Over!  ");
     Line2();
     WriteMSG("Vending restarte");
 }
 void msg_insertMoney(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG(" Amount of money");
     Line2();
     WriteMSG_Amount("      $**       ");
 }
 void msg_ConfirmBuy(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("'#' for confirm ");
     Line2();
-    WriteMSG("'#' for confirm ");
+    WriteMSG("                ");
 }
-void msg_CanceledByUsr_money(unsigned int value){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+void msg_CanceledByUsr_money(){
+    routine1_MSG();
     WriteMSG("    Canceled    ");
     WriteMSG_Change("  Change: $**   ");
 }
-void msg_dispenseProduct(unsigned int value){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+void msg_dispenseProduct(){
+    routine1_MSG();
     WriteMSG("   Successful   ");
     Line2();
     WriteMSG("                ");
 }
-void msg_timeoutWithMoney(unsigned int value){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+void msg_timeoutWithMoney(){
+    routine1_MSG();
     WriteMSG("  Time is Out!  ");
     Line2();
     WriteMSG("  Time is Out!  ");
 }
 void msg_WorkingOnDispenser(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("   Working on   ");
     Line2();
     WriteMSG("    request!    ");
 }
 void msg_done(){
-    msg_CLEANER();
-    ConfigLCD();
-    Line1();
+    routine1_MSG();
     WriteMSG("      Done      ");
     Line2();
     WriteMSG("    Enjoy! :)   ");
@@ -411,16 +437,22 @@ void msg_done(){
 void start() {
     msg_Start();
     P0 = 1;
-    //IE = 0x8F;
-    moneyIsReady = 0;
+    IE = 0x8F;
+
     TMOD = 0x11;
+    TR0 = 0;
+    TF0 = 0;
+    TR1 = 0;
+    TF1 = 0;
+    TIMER0 = 1;
+    TIMER1 = 1;
+
     digit1 = 77;
     digit2 = 77;
     digit12 = 0;
     price = 0;
-    TIMER0 = 1;
-    TIMER1 = 1;
     amount = 0;
+    moneyIsReady = 0;
 }
 int codeValidation(){
     for(dispenser = 0; dispenser <= MAX_PRODUCT; dispenser++) {
@@ -431,7 +463,7 @@ int codeValidation(){
     }
     return 0;
 }
- int sumOfMoney(){
+int sumOfMoney(){
     if(!PLUS1)
         return 1;
     if(!PLUS10)
@@ -441,15 +473,12 @@ int codeValidation(){
     if(!MINUS10)
         return -10;
 }
-unsigned int changeOfCanceled(){
-    return amount;
-}
 unsigned int change(){
     return amount - price;
 }
 
 unsigned int startCode(){
-    IE1 = 1; //interrupt of money disabled
+    EX0 = 0; //interrupt of money disabled
     msg_InsertCode2();
     delayMs1(LITTLE_WAIT); //time for read msg
     timer1(TIME_WAIT);
@@ -506,19 +535,19 @@ unsigned int giveMeTheMoney(){
             while(TIMER0){
                 int x = scanKeyboard();
                 if(x == 10){
-                    msg_CanceledByUsr_money(changeOfCanceled());
+                    msg_CanceledByUsr_money();
                     delayMs1(LITTLE_WAIT);
                     return 0; //canceled by user | with money
                 }
                 if(x == 12) {
-                    msg_dispenseProduct(change());
+                    msg_dispenseProduct();
                     delayMs1(LITTLE_WAIT);
                     return 1; //confirmed by user
                 }
             }
         }
     }
-    msg_timeoutWithMoney(changeOfCanceled());
+    msg_timeoutWithMoney();
     delayMs1(LITTLE_WAIT);
     return 0; //digit1 ok digit2 ok | money timeout
 }
@@ -540,6 +569,7 @@ void convertIntToBinary(){
     MOTOR2 = (dispenser >> 2) & 1;
     MOTOR3 = (dispenser >> 3) & 1;
 }
+
 //Wait until delay ends
 void delayMs0(unsigned int ms){          //use timer0 Mode01 (16 bits)
     while(ms){
@@ -548,7 +578,6 @@ void delayMs0(unsigned int ms){          //use timer0 Mode01 (16 bits)
         TR0 = 1;
         while(!TF0);
         TF0 = 0;
-        TR0 = 0;
         ms--;
     }
 }
@@ -603,3 +632,14 @@ void ISR_External0(void) interrupt 0{
     moneyIsReady = 1;
 return;
 }
+void ISR_Timer0(void) interrupt 1{
+    over_timer1++;
+    return;
+}
+void ISR_Timer1(void) interrupt 3{
+IE0 = 0;
+moneyIsReady = 1;
+return;
+}
+
+
