@@ -16,7 +16,6 @@
 #include "C:\Program Files\Keil_v5\C51\INC\Atmel\at89x52.h"
 #include <stdio.h>
 
-unsigned int over_timer1;
 
 //pins P0
 #define MOTOR0 P0_0
@@ -121,8 +120,8 @@ unsigned int scanKeyboard();    //scan keyboard 4x3
 
 
 //flags of interruption 8051
-unsigned int TIMER0;            //Flag TF0
-unsigned int TIMER1;            //Flag TF1
+unsigned int timer0end;         //Flag TF0
+unsigned int timer1end;         //Flag TF1
 unsigned int EXTER0;            //Flag IE0
 unsigned int EXTER1;            //Flag IE1
 unsigned int moneyIsReady;      //Flag IE0
@@ -234,7 +233,7 @@ unsigned int scanKeyboard() {
             Delay5us();
             return 12;
         }
-        if (TIMER1)
+        if (timer1end)
             return 77;
     }
 }
@@ -293,30 +292,32 @@ void WriteMSG_DIGIT2(char msg[]){
         WrCHAR();
     }
 }
-void WriteMSG_Amount(char msg[]){
-    unsigned char i;
-    for(i = 0; i <= 16; i++){
-        if(i==7) {
-            LCD = '0' + amount/10;
-        }else if(i==8)
-                LCD = '0' + amount%10;
-        else
-            LCD = msg[i];
-        WrCHAR();
-    }
-}/*
-void WriteMSG_Change(char msg[]){
-    unsigned char i;
-    for(i = 0; i <= 16; i++){
-        if(i==7) {
-            LCD = '0' + amount/10;
-        }else if(i==8)
-            LCD = '0' + amount%10;
-        else
-            LCD = msg[i];
-        WrCHAR();
-    }
-}*/
+//void WriteMSG_Amount(char msg[]){
+//    unsigned char i;
+//    for(i = 0; i <= 16; i++){
+//        if(i==7) {
+//            LCD = '0' + amount/10;
+//        }else if(i==8)
+//                LCD = '0' + amount%10;
+//        else
+//            LCD = msg[i];
+//        WrCHAR();
+//    }
+//}
+//
+//void WriteMSG_Change(char msg[]){
+//    unsigned char i;
+//    for(i = 0; i <= 16; i++){
+//        if(i==7) {
+//            LCD = '0' + amount/10;
+//        }else if(i==8)
+//            LCD = '0' + amount%10;
+//        else
+//            LCD = msg[i];
+//        WrCHAR();
+//    }
+//}
+
 void Line1(){
     LCD = 0x00;
     WrCMD();
@@ -350,10 +351,8 @@ void msg_CLEANER(){
 }
 void msg_Start(){
     routine1_MSG();
-    delayMs0(5);
     WriteMSG(" Insert product ");
     Line2();
-    delayMs0(5);
     WriteMSG(" code or money  ");
 }
 void msg_InsertCode2(){
@@ -444,8 +443,8 @@ void start() {
     TF0 = 0;
     TR1 = 0;
     TF1 = 0;
-    TIMER0 = 1;
-    TIMER1 = 1;
+    timer0end = 1;
+    timer1end = 1;
 
     digit1 = 77;
     digit2 = 77;
@@ -482,7 +481,7 @@ unsigned int startCode(){
     msg_InsertCode2();
     delayMs1(LITTLE_WAIT); //time for read msg
     timer1(TIME_WAIT);
-    while(TIMER1){
+    while(timer1end){
         digit2 = scanKeyboard();
         //10 == '*' | CANCEL
         if (digit2 == 10){
@@ -521,7 +520,7 @@ unsigned int giveMeTheMoney(){
     msg_insertMoney();
     delayMs1(LITTLE_WAIT); //time for read msg
     timer1(TIME_WAIT);
-    while(TIMER1){
+    while(timer1end){
         if(moneyIsReady) {
             amount += sumOfMoney();
             timer1(TIME_WAIT);
@@ -532,7 +531,7 @@ unsigned int giveMeTheMoney(){
             msg_ConfirmBuy();
             delayMs1(LITTLE_WAIT);
             timer0(TIME_WAIT);
-            while(TIMER0){
+            while(timer0end){
                 int x = scanKeyboard();
                 if(x == 10){
                     msg_CanceledByUsr_money();
@@ -570,46 +569,30 @@ void convertIntToBinary(){
     MOTOR3 = (dispenser >> 3) & 1;
 }
 
-//Wait until delay ends
-void delayMs0(unsigned int ms){          //use timer0 Mode01 (16 bits)
-    while(ms){
-        TH0 = 0xFE;			//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
-        TL0 = 0x18;
-        TR0 = 1;
-        while(!TF0);
-        TF0 = 0;
-        ms--;
-    }
-}
-//Wait until delay ends
-void delayMs1(unsigned int ms){          //use timer1 Mode01 (16 bits)
-    while(ms){
-        TH1 = 0xFE;			//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
-        TL1 = 0x18;
-        TR1 = 1;
-        while(!TF1);
-        TF1 = 0;
-        TR1 = 0;
-        ms--;
-    }
-}
 //Wait until MICRO delay ends
 void Delay5us(){
     unsigned char i;
     for(i = 0; i < 5; i++){}
 }
+//Wait until delay ends
+void delayMs0(unsigned int ms){          //use timer0 Mode01 (16 bits)
+    timer0(ms);
+    while(!timer0end){}
+    TR0 = 0;
+}
+//Wait until delay ends
+void delayMs1(unsigned int ms){          //use timer1 Mode01 (16 bits)
+    timer1(ms);
+    while(!timer1end){}
+    TR1 = 0;
+}
 //like set an alarm
 void timer0(unsigned int ms){            //use timer0 Mode01 (16 bits)
     TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
     TL0 = 0x18;
-    TR0 = 1;
     TF0 = 0;
-    TIMER0 = 1;
-    if(!ms){
-        TR0 = 0;
-        TIMER0 = 0;
-    }
-    ms--;
+    TR0 = 1;
+    timer0end = ms;
 }
 //like set an alarm
 void timer1(unsigned int ms){            //use timer0 Mode01 (16 bits)
@@ -617,13 +600,7 @@ void timer1(unsigned int ms){            //use timer0 Mode01 (16 bits)
     TL1 = 0x18;
     TR1 = 1;
     TF1 = 0;
-    TIMER1 = 1;
-    ms--;
-    if(!ms){
-        TR1 = 0;
-        TIMER1 = 0;
-    }
-    ms--;
+    timer1end = ms;
 }
 //interruptions
 
@@ -633,13 +610,22 @@ void ISR_External0(void) interrupt 0{
 return;
 }
 void ISR_Timer0(void) interrupt 1{
-    over_timer1++;
+    TF0 = 0;
+    TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    TL0 = 0x18;
+    timer0end--;
+    if(!timer0end)
+        TR0 = 0;
     return;
 }
 void ISR_Timer1(void) interrupt 3{
-IE0 = 0;
-moneyIsReady = 1;
-return;
+    TF0 = 0;
+    TH0 = 0xFE;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+    TL0 = 0x18;
+    timer1end--;
+    if(!timer1end)
+        TR0 = 0;
+    return;
 }
 
 
