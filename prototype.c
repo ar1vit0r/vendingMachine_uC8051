@@ -155,6 +155,7 @@ void main() {
             }
             goto start;
         }
+        goto start;
         //start with money
         //if (EX0) {
         //    //startMoney();
@@ -550,6 +551,7 @@ void dispenseProduct() {
     MOTOR1 = 0;
     MOTOR2 = 0;
     MOTOR3 = 0;
+    P1_7 = 1;
     return;
 }
 void convertIntToBinary(){
