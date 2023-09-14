@@ -18,10 +18,10 @@
 
 
 //pins P0
-#define MOTOR0 P0_0
-#define MOTOR1 P0_1
-#define MOTOR2 P0_2
-#define MOTOR3 P0_3
+#define MOTOR0 P1_0
+#define MOTOR1 P1_1
+#define MOTOR2 P1_2
+#define MOTOR3 P1_3
 //pins P1
 #define LINA    P1_0
 #define LINB    P1_1
@@ -419,7 +419,8 @@ void msg_done(){
 }
 
 void start() {
-    P0 = 1;
+    digit1 = 77;
+    digit2 = 77;
     IE = 0xFF;
     TMOD = 0x11;
     TH0 = 0xFC;
@@ -427,8 +428,6 @@ void start() {
     TH1 = 0xFC;
     TL1 = 0x18;
 
-    digit1 = 77;
-    digit2 = 77;
     price = 0;
     amount = 0;
     moneyIsReady = 0;
@@ -454,6 +453,7 @@ int sumOfMoney(){
         return -1;
     if(!MINUS10)
         return -10;
+    return 0;
 }
 unsigned int change(){
     return amount - price;
@@ -538,9 +538,12 @@ unsigned int giveMeTheMoney(){
     return 0; //digit1 ok digit2 ok | money timeout
 }
 void dispenseProduct() {
+    P1 = 0;
+    P1_7 = 1;
     convertIntToBinary();
+    P1_7 = 0;
     msg_WorkingOnDispenser();
-    delayMs1(LITTLE_WAIT);
+    delayMs1(5000);
     msg_done();
     delayMs1(LITTLE_WAIT);
     MOTOR0 = 0;
