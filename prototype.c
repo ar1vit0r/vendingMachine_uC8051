@@ -60,7 +60,7 @@
 #define COD_PRODUCT_3 10
 #define COD_PRODUCT_4 11
 #define COD_PRODUCT_5 12
-#define COD_PRODUCT_6 20
+#define COD_PRODUCT_6 23
 #define COD_PRODUCT_7 21
 #define COD_PRODUCT_8 22
 //value of times in ms
@@ -92,7 +92,6 @@ void msg_WorkingOnDispenser();
 void msg_done();
 void WriteMSG_DIGIT2(char msg[]);
 void WriteMSG_DIGIT1(char msg[]);
-void WriteMSG_Change(char msg[]);
 void WriteMSG_Amount(char msg[]);
 
 //timers
@@ -309,19 +308,6 @@ void WriteMSG_Amount(char msg[]){
     }
 }
 
-//void WriteMSG_Change(char msg[]){
-//    unsigned char i;
-//    for(i = 0; i <= 16; i++){
-//        if(i==7) {
-//            LCD = '0' + amount/10;
-//        }else if(i==8)
-//            LCD = '0' + amount%10;
-//        else
-//            LCD = msg[i];
-//        WrCHAR();
-//    }
-//}
-
 void Line1(){
     LCD = 0x00;
     WrCMD();
@@ -399,31 +385,25 @@ void msg_insertMoney(){
     routine1_MSG();
     WriteMSG(" Amount of money");
     Line2();
-    //WriteMSG("      $**       ");
     WriteMSG_Amount("      $**       ");
 }
 void msg_ConfirmBuy(){
     routine1_MSG();
-    WriteMSG("'#' for confirm ");
+    WriteMSG("'#' for Confirm ");
     Line2();
-    WriteMSG("                ");
-}
-void msg_CanceledByUsr_money(){
-    routine1_MSG();
-    WriteMSG("    Canceled    ");
-    WriteMSG_Change("  Change: $**   ");
+    WriteMSG(" '*' for Cancel ");
 }
 void msg_dispenseProduct(){
     routine1_MSG();
-    WriteMSG("   Successful   ");
+    WriteMSG("   Thank you  ");
     Line2();
-    WriteMSG("                ");
+    WriteMSG("    =>.<=     ");
 }
 void msg_timeoutWithMoney(){
     routine1_MSG();
     WriteMSG("  Time is Out!  ");
     Line2();
-    WriteMSG("  Time is Out!  ");
+    WriteMSG("       :(       ");
 }
 void msg_WorkingOnDispenser(){
     routine1_MSG();
@@ -441,19 +421,14 @@ void msg_done(){
 void start() {
     P0 = 1;
     IE = 0xFF;
-
-
     TMOD = 0x11;
     TH0 = 0xFC;
     TL0 = 0x18;
     TH1 = 0xFC;
     TL1 = 0x18;
-    timer0end = 0;
-    timer1end = 0;
 
     digit1 = 77;
     digit2 = 77;
-    digit12 = 0;
     price = 0;
     amount = 0;
     moneyIsReady = 0;
@@ -531,9 +506,8 @@ unsigned int giveMeTheMoney(){
     while(timer1end){
         if(moneyIsReady) {
             EX0 = 0;
-            msg_insertMoney();
-            timer1(TIME_WAIT);
             amount = amount + sumOfMoney();
+            msg_insertMoney();
             timer1(TIME_WAIT);
             moneyIsReady = 0;
             EX0 = 1;
@@ -547,7 +521,7 @@ unsigned int giveMeTheMoney(){
             while(timer0end){
                 int x = scanKeyboard();
                 if(x == 10){
-                    msg_CanceledByUsr_money();
+                    msg_CanceledByUsr();
                     delayMs1(LITTLE_WAIT);
                     return 0; //canceled by user | with money
                 }
