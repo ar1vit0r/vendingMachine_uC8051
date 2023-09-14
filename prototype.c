@@ -54,9 +54,9 @@
 #define PRICE_PRODUCT_7 18
 #define PRICE_PRODUCT_8 1
 
-#define COD_PRODUCT_0 00
-#define COD_PRODUCT_1 01
-#define COD_PRODUCT_2 02
+#define COD_PRODUCT_0 32
+#define COD_PRODUCT_1 52
+#define COD_PRODUCT_2 78
 #define COD_PRODUCT_3 10
 #define COD_PRODUCT_4 11
 #define COD_PRODUCT_5 12
@@ -122,8 +122,6 @@ unsigned int scanKeyboard();    //scan keyboard 4x3
 //flags of interruption 8051
 unsigned int timer0end;         //Flag TF0
 unsigned int timer1end;         //Flag TF1
-unsigned int EXTER0;            //Flag IE0
-unsigned int EXTER1;            //Flag IE1
 unsigned int moneyIsReady;      //Flag IE0
 
 //global variables
@@ -147,9 +145,15 @@ void main() {
         digit1 = scanKeyboard();
         //10 == '*' | 12 == '#' | 77 == void
         if((digit1 != 10) && (digit1 != 12) && (digit1 != 77)){
-            if (startCode())
-                if (giveMeTheMoney())
+            if (startCode()) {
+                TR0 = 0;
+                TR1 = 0;
+                if (giveMeTheMoney()) {
+                    TR0 = 0;
+                    TR1 = 0;
                     dispenseProduct();
+                }
+            }
             goto start;
         }
         //start with money
@@ -265,7 +269,7 @@ void WriteMSG_DIGIT1(char msg[]){
                 LCD = '0' + digit1;
             }
         }else if(i==8)
-                LCD = '*';
+            LCD = '*';
         else
             LCD = msg[i];
         WrCHAR();
@@ -292,19 +296,19 @@ void WriteMSG_DIGIT2(char msg[]){
         WrCHAR();
     }
 }
-//void WriteMSG_Amount(char msg[]){
-//    unsigned char i;
-//    for(i = 0; i <= 16; i++){
-//        if(i==7) {
-//            LCD = '0' + amount/10;
-//        }else if(i==8)
-//                LCD = '0' + amount%10;
-//        else
-//            LCD = msg[i];
-//        WrCHAR();
-//    }
-//}
-//
+void WriteMSG_Amount(char msg[]){
+    unsigned char i;
+    for(i = 0; i <= 16; i++){
+        if(i==7) {
+            LCD = '0' + amount/10;
+        }else if(i==8)
+                LCD = '0' + amount%10;
+        else
+            LCD = msg[i];
+        WrCHAR();
+    }
+}
+
 //void WriteMSG_Change(char msg[]){
 //    unsigned char i;
 //    for(i = 0; i <= 16; i++){
@@ -395,6 +399,7 @@ void msg_insertMoney(){
     routine1_MSG();
     WriteMSG(" Amount of money");
     Line2();
+    //WriteMSG("      $**       ");
     WriteMSG_Amount("      $**       ");
 }
 void msg_ConfirmBuy(){
@@ -455,8 +460,10 @@ void start() {
     msg_Start();
 }
 int codeValidation(){
-    for(dispenser = 0; dispenser <= MAX_PRODUCT; dispenser++) {
-        if (digit12 == codeProduct[dispenser]) {
+    unsigned int i;
+    for(i = 0; i <= MAX_PRODUCT; i++) {
+        if (digit12 == codeProduct[i]) {
+            dispenser = i;
             price = priceProduct[dispenser];
             return 1;
         }
@@ -517,17 +524,22 @@ unsigned int startCode(){
 }
 
 unsigned int giveMeTheMoney(){
-    IE0 = 0; //interrupt of money enable
     msg_insertMoney();
     delayMs1(LITTLE_WAIT); //time for read msg
     timer1(TIME_WAIT);
+    EX0 = 1; //interrupt of money enable
     while(timer1end){
         if(moneyIsReady) {
-            amount += sumOfMoney();
+            EX0 = 0;
+            msg_insertMoney();
+            timer1(TIME_WAIT);
+            amount = amount + sumOfMoney();
             timer1(TIME_WAIT);
             moneyIsReady = 0;
+            EX0 = 1;
         }
         if (amount >= price){
+            EX0 = 0;
             timer1(TIME_WAIT);
             msg_ConfirmBuy();
             delayMs1(LITTLE_WAIT);
@@ -604,27 +616,27 @@ void timer1(unsigned int ms){            //use timer0 Mode01 (16 bits)
 //interruptions
 
 void ISR_External0(void) interrupt 0{
-    IE0 = 0;
+    //EX0 = 0;
     moneyIsReady = 1;
-return;
+    return;
 }
 void ISR_Timer0(void) interrupt 1{
-    TF0 = 0;
-    TH0 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
-    TL0 = 0x18;
-    timer0end = timer0end-1;
-    if(!timer0end)
-        TR0 = 0;
-    return;
+TF0 = 0;
+TH0 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+TL0 = 0x18;
+timer0end = timer0end-1;
+if(!timer0end)
+TR0 = 0;
+return;
 }
 void ISR_Timer1(void) interrupt 3{
-    TF1 = 0;
-    TH1 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
-    TL1 = 0x18;
-    timer1end--;
-    if(!timer1end)
-        TR1 = 0;
-    return;
+TF1 = 0;
+TH1 = 0xFC;				//1 ms @ f = 12 MHz (i.e. 64535) on Mode01
+TL1 = 0x18;
+timer1end--;
+if(!timer1end)
+TR1 = 0;
+return;
 }
 
 
