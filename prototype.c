@@ -165,6 +165,9 @@ void main() {
 }
 
 unsigned int scanKeyboard() {
+    COL1 = 1;
+    COL2 = 1;
+    COL3 = 1;
     while(1) {
         Delay5us();
         LINA = 0;
@@ -446,15 +449,23 @@ int codeValidation(){
     return 0;
 }
 int sumOfMoney(){
-    if(!PLUS1)
+    if(!PLUS1 && !PLUS10)
+        return 11;
+    else if(!PLUS1 && !MINUS10)
+        return -9;
+    else if(!MINUS1 && !PLUS10)
+        return 9;
+    else if(!MINUS1 && !MINUS10)
+        return -11;
+    else if(!PLUS1)
         return 1;
-    if(!PLUS10)
+    else if(!PLUS10)
         return 10;
-    if(!MINUS1)
+    else if(!MINUS1)
         return -1;
-    if(!MINUS10)
+    else if(!MINUS10)
         return -10;
-    return 0;
+    else return 0;
 }
 unsigned int change(){
     return amount - price;
@@ -544,14 +555,16 @@ void dispenseProduct() {
     convertIntToBinary();
     P1_7 = 0;
     msg_WorkingOnDispenser();
+    delayMs1(200);
+    P1_7 = 1;
     delayMs1(5000);
     msg_done();
     delayMs1(LITTLE_WAIT);
+
     MOTOR0 = 0;
-    MOTOR1 = 0;
-    MOTOR2 = 0;
-    MOTOR3 = 0;
-    P1_7 = 1;
+    MOTOR1 = 1;
+    MOTOR2 = 1;
+    MOTOR3 = 1;
     return;
 }
 void convertIntToBinary(){
