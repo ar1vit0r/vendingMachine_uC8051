@@ -16,6 +16,7 @@
 #include "C:\Program Files\Keil_v5\C51\INC\Atmel\at89x52.h"
 #include <stdio.h>
 
+unsigned char vazio[]= {"                 "};
 
 //pins P0
 #define MOTOR0 P1_0
@@ -108,7 +109,7 @@ unsigned int startCode();       //start machine with code
 
 int codeValidation();
 int sumOfMoney();
-unsigned int change();
+void change();
 
 unsigned int giveMeTheMoney();  //request money for product | when nows the code
 void dispenseProduct();         //set motors of respective COD_PRODUCT
@@ -302,7 +303,9 @@ void WriteMSG_DIGIT2(char msg[]){
 void WriteMSG_Amount(char msg[]){
     unsigned char i;
     for(i = 0; i <= 16; i++){
-        if(i==7) {
+				if(i==6) {
+						LCD = '$';
+        }else if(i==7) {
             LCD = '0' + amount/10;
         }else if(i==8)
                 LCD = '0' + amount%10;
@@ -347,13 +350,13 @@ void msg_Start(){
     routine1_MSG();
     WriteMSG(" Insert product ");
     Line2();
-    WriteMSG(" code or money  ");
+		WriteMSG("     code :)    ");
 }
 void msg_InsertCode2(){
     routine1_MSG();
     WriteMSG("   Second code  ");
     Line2();
-    WriteMSG_DIGIT1("                ");
+    WriteMSG_DIGIT1(vazio);
 }
 void msg_CanceledByUsr(){
     routine1_MSG();
@@ -363,7 +366,7 @@ void msg_CanceledByUsr(){
 }
 void msg_Code2Required(){
     routine1_MSG();
-    WriteMSG("   Second code! ");
+    WriteMSG("  Second code!  ");
     Line2();
     WriteMSG("    # Denied!   ");
 }
@@ -371,7 +374,7 @@ void msg_Code2Insert(){
     routine1_MSG();
     WriteMSG("  Product code: ");
     Line2();
-    WriteMSG_DIGIT2("                ");
+    WriteMSG_DIGIT2(vazio);
 }
 void msg_IllegalCode(){
     routine1_MSG();
@@ -389,7 +392,7 @@ void msg_insertMoney(){
     routine1_MSG();
     WriteMSG(" Amount of money");
     Line2();
-    WriteMSG_Amount("      $**       ");
+    WriteMSG_Amount(vazio);
 }
 void msg_ConfirmBuy(){
     routine1_MSG();
@@ -399,15 +402,15 @@ void msg_ConfirmBuy(){
 }
 void msg_dispenseProduct(){
     routine1_MSG();
-    WriteMSG("   Thank you  ");
+	WriteMSG(" Your change is:");
     Line2();
-    WriteMSG("    =>.<=     ");
+    WriteMSG_Amount(vazio);
 }
 void msg_timeoutWithMoney(){
     routine1_MSG();
     WriteMSG("  Time is Out!  ");
     Line2();
-    WriteMSG("       :(       ");
+    WriteMSG(vazio);
 }
 void msg_WorkingOnDispenser(){
     routine1_MSG();
@@ -467,8 +470,8 @@ int sumOfMoney(){
         return -10;
     else return 0;
 }
-unsigned int change(){
-    return amount - price;
+void change(){
+    amount = amount - price;
 }
 
 unsigned int startCode(){
@@ -528,6 +531,7 @@ unsigned int giveMeTheMoney(){
             EX0 = 0;
             timer1(TIME_WAIT);
             msg_ConfirmBuy();
+						change();
             delayMs1(LITTLE_WAIT);
             timer0(TIME_WAIT);
             while(timer0end){
@@ -632,3 +636,4 @@ return;
 }
 
 
+ 
